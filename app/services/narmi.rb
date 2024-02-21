@@ -79,19 +79,19 @@ class Narmi
 
     puts "EXCHANGE"
     puts @exchange
-    puts @exchange[:token]
-    puts @exchange[:secret]
+    puts @exchange["token"]
+    puts @exchange["secret"]
 
     # Calculate HMAC using OpenSSL
-    signature = OpenSSL::HMAC.digest('sha256', @exchange[:secret] , "date: #{date}")
+    signature = OpenSSL::HMAC.digest('sha256', @exchange["secret"] , "date: #{date}")
     signature_base64 = Base64.strict_encode64(signature)
 
     # Construct the Signature header
-    sig_header = "keyId=\"#{@exchange[:token]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
+    sig_header = "keyId=\"#{@exchange["token"]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
 
     # Construct request headers
     request_headers = {
-      'Authorization' => "Bearer #{@exchange[:token]}",
+      'Authorization' => "Bearer #{@exchange["token"]}",
       'date' => date,
       'Content-Type' => 'text/javascript',
       'Signature' => sig_header
