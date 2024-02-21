@@ -15,6 +15,12 @@ class AuthenticationsController < ApplicationController
     puts "DECODED BODY"
     puts decoded_body
 
+    test_parts = decoded_body.split('.')
+    puts "TEST PARTS"
+    test_parts.each_with_index do |part, index|
+      puts "#{index}: #{part}"
+    end
+
     # Extract the request parts
     request_parts = decoded_body.split('&').first.split('=').last.split('.')
     puts "REQUEST PARTS"
@@ -36,8 +42,6 @@ class AuthenticationsController < ApplicationController
     puts "SHHH"
     puts Rails.application.credentials.dig(:narmi, :secret)
     hmac = OpenSSL::HMAC.digest('sha256', Rails.application.credentials.dig(:narmi, :secret), signed_message)
-    puts "HMAC"
-    puts hmac
     calculated_hmac = Base64.urlsafe_encode64(hmac)
     puts "CALCULATED HMAC"
     puts calculated_hmac
