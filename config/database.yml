@@ -4,14 +4,17 @@ connection: &connection
   adapter: postgresql
   encoding: unicode
   pool: 5
-  username: <PG_USERNAME>
-  password: <PG_PASSWORD>
-  timeout: 5000
 
 development:
   <<: *connection
-  database: rails_development
+  database: naf_development
 
 test:
   <<: *connection
-  database: rails_test
+  database: naf_test
+
+production:
+  <<: *connection
+  database: naf_production
+  username: naf_admin
+  password: <%= ENV['NAF_DATABASE_PASSWORD'] %>
