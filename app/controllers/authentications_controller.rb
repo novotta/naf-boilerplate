@@ -11,6 +11,10 @@ class AuthenticationsController < ApplicationController
     encoded_signature, encoded_payload = signed_request.split('.', 2)
     puts "ENCODED SIGNATURE"
     puts encoded_signature
+    puts "ENCODED PAYLOAD"
+    puts encoded_payload
+    puts "SIGNED REQUEST"
+    puts signed_request
 
     # Decode the encoded signature and payload from base64
     signature = Base64.urlsafe_decode64(encoded_signature)
