@@ -45,12 +45,12 @@ class AuthenticationController < ApplicationController
 
   def exchange_token(code, client_id)
     payload = {
-      grant_type: "authorization_code",
-      code: code,
-      scope: "read write read:profile write:preferences",
-      client_id: client_id,
-      client_secret: Rails.application.credentials.dig(:narmi, :secret)
-    }.to_json
+      "grant_type": "authorization_code",
+      "code": code,
+      "scope": "read write read:profile write:preferences",
+      "client_id": client_id,
+      "client_secret": Rails.application.credentials.dig(:narmi, :secret)
+    }
 
     response = HTTP.headers("Content-Type" => "application/json").post("https://api.sandbox.narmi.dev/v1/tokens", json: payload).parse
   end
