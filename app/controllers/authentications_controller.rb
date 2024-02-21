@@ -26,7 +26,7 @@ class AuthenticationsController < ApplicationController
     puts signed_message
 
     # Calculate HMAC using OpenSSL
-    hmac = OpenSSL::HMAC.digest('sha256', authentication_params[:code], signed_message)
+    hmac = OpenSSL::HMAC.digest('sha256', ENV['NARMI_SECRET_KEY'], signed_message)
     puts "HMAC"
     puts hmac
     calculated_hmac = Base64.urlsafe_encode64(hmac)
