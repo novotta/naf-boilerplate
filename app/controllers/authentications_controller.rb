@@ -15,10 +15,11 @@ class AuthenticationsController < ApplicationController
     puts "DECODED BODY"
     puts decoded_body
 
-    test_parts = decoded_body.split('.')
+    test_parts = signed_request.split('.')
     puts "TEST PARTS"
     test_parts.each_with_index do |part, index|
       puts "#{index}: #{part}"
+      puts Base64.decode64(part)
     end
 
     # Extract the request parts
