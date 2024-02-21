@@ -7,11 +7,14 @@ function useQuery() {
 
 function YourComponent() {
   let query = useQuery();
+  let token = query.get('token');
+  let secret = query.get('secret');
 
   return (
     <div>
       <h1>Novotta</h1>
-      <p>Query: {query}</p>
+      <p>Token: {token}</p>
+      <p>Secret: {secret}</p>
     </div>
   );
 }
