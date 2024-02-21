@@ -38,7 +38,7 @@ class AuthenticationController < ApplicationController
     puts "TOKEN"
     puts token.inspect
 
-    redirect_to '/', body: token
+    redirect_to "/?#{token.to_query}"
   end
 
   private
