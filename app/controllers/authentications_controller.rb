@@ -45,7 +45,7 @@ class AuthenticationsController < ApplicationController
     end
 
     # Decode the payload from base64 and parse it as JSON
-    payload = JSON.parse(Base64.decode64(request_parts[1]))
+    payload = JSON.parse(Base64.decode64(test_parts[1]))
 
 
     # Now you have access to the decoded payload
