@@ -36,9 +36,9 @@ class AuthenticationController < ApplicationController
     token = exchange_token(authentication_params[:code], client_id)
 
     puts "TOKEN"
-    puts token.inspect
+    puts token["token"].inspect
 
-    redirect_to "/?#{token.to_query}"
+    redirect_to "/?token=#{token["token"]}"
   end
 
   private
