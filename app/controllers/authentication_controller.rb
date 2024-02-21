@@ -19,11 +19,11 @@ class AuthenticationController < ApplicationController
 
     # Compare the calculated HMAC with the provided HMAC
     if calculated_hmac != test_parts[2]
-
       puts "failed to validate signed jwt"
       return
     end
 
+    # TODO: Remove this test call
     puts "TEST CALL"
     response = Narmi.new(authentication_params[:code]).accounts
     puts response.inspect
