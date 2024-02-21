@@ -20,6 +20,13 @@ class AuthenticationsController < ApplicationController
     puts "REQUEST PARTS"
     puts request_parts
 
+    puts "REQUEST PARTS 0"
+    puts request_parts[0]
+    puts "REQUEST PARTS 1"
+    puts request_parts[1]
+    puts "REQUEST PARTS 2"
+    puts request_parts[2]
+
     # Combine the first two parts to recreate the signed message
     signed_message = "#{request_parts[0]}.#{request_parts[1]}"
     puts "SIGNED MESSAGE"
