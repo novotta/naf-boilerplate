@@ -14,6 +14,8 @@ class Narmi
     logger = Logger.new($stdout)
     @http = HTTP.use(logging: {logger: logger})
     @exchange = exchange_token(code)
+    puts "INITIALIZED"
+    puts @exchange.inspect
   end
 
   # ==============================================
@@ -24,7 +26,9 @@ class Narmi
   # LIST -----------------------------------------
   # ----------------------------------------------
   # response = Narmi.new(code).accounts
+  # response = Narmi.new('ZBUELMEZWLKsJufHIqYTJn8sPZnwL0a8').accounts
   def accounts
+    puts "GET ACCOUNTS"
     get("/accounts")
   end
 
