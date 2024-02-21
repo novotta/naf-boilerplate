@@ -10,50 +10,61 @@ class AuthenticationsController < ApplicationController
     puts "SIGNED REQUEST"
     puts signed_request
 
-    # Decode the signed request from base64
-    decoded_body = Base64.decode64(signed_request)
-    puts "DECODED BODY"
-    puts decoded_body
+    # Split the signed request into three parts
+    encoded_signature, encoded_payload = signed_request.split('.', 2)
+    puts "ENCODED SIGNATURE"
+    puts encoded_signature
+    puts "ENCODED PAYLOAD"
+    puts encoded_payload
+    puts "SIGNED REQUEST"
+    puts signed_request
 
-    # Extract the request parts
-    request_parts = decoded_body.split('&').first.split('=').last.split('.')
-    puts "REQUEST PARTS"
-    puts request_parts
+    # Decode the encoded signature and payload from base64
+    signature = Base64.urlsafe_decode64(encoded_signature)
+    puts "SIGNATURE"
+    puts signature
+    payload = Base64.urlsafe_decode64(encoded_payload)
+    puts "PAYLOAD"
+    puts payload
 
-    # Combine the first two parts to recreate the signed message
-    signed_message = "#{request_parts[0]}.#{request_parts[1]}"
-    puts "SIGNED MESSAGE"
-    puts signed_message
+    # Calculate the expected signature of the request using your Client Secret
+    expected_signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), Rails.application.credentials.dig(:narmi, :secret), encoded_payload)
 
-    # Calculate HMAC using OpenSSL
-    puts "SHHH"
-    puts Rails.application.credentials.dig(:narmi, :secret)
-    hmac = OpenSSL::HMAC.digest('sha256', Rails.application.credentials.dig(:narmi, :secret), signed_message)
-    puts "HMAC"
-    puts hmac
-    calculated_hmac = Base64.urlsafe_encode64(hmac)
-    puts "CALCULATED HMAC"
-    puts calculated_hmac
+    puts "EXPECTED SIGNATURE"
+    puts expected_signature
 
-    # Compare the calculated HMAC with the provided HMAC
-    if calculated_hmac != request_parts[2]
-      # If HMACs don't match, handle the error accordingly
-      puts "failed to validate signed jwt"
-      return
+    # Compare the expected signature with the provided signature
+    if secure_compare(expected_signature, signature)
+      puts "VALID SIGNATURE"
+      # If signatures match, decode the payload from JSON
+      user_info = JSON.parse(payload)
+
+      puts "USER INFO"
+      puts user_info
+
+      # Now you have access to the decoded user information
+      # You can process it further as needed
+      # For example, you can access user_info['user_id'], user_info['email'], etc.
+
+      redirect_to '/', notice: user_info.to_json
+    else
+      puts "INVALID SIGNATURE"
+      # If signatures don't match, handle the error accordingly
+      redirect_to '/', alert: 'Invalid signature'
     end
-
-    # Decode the payload from base64 and parse it as JSON
-    payload = JSON.parse(Base64.decode64(request_parts[1]))
-
-
-    # Now you have access to the decoded payload
-    puts "validated signed jwt: #{payload}"
-
-    redirect_to '/', notice: payload
-
   end
 
   private
+
+  # Constant-time comparison algorithm to mitigate timing attacks
+  def secure_compare(a, b)
+    return false if a.length != b.length
+
+    l = a.unpack "C#{a.length}"
+    res = 0
+    b.each_byte { |byte| res |= byte ^ l.shift }
+    res.zero?
+  end
 
   # permit the secure code to be passed in the request
   def authentication_params
