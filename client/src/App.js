@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -19,12 +19,10 @@ function YourComponent() {
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/">
-          <YourComponent />
-        </Route>
+      <Routes>
+        <Route path="/" element={<YourComponent />} />
         {/* Other routes */}
-      </Switch>
+      </Routes>
     </Router>
   );
 }
