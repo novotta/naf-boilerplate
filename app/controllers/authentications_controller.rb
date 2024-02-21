@@ -31,9 +31,11 @@ class AuthenticationsController < ApplicationController
     puts "SHHH"
     puts Rails.application.credentials.dig(:narmi, :secret)
     hmac = OpenSSL::HMAC.digest('sha256', Rails.application.credentials.dig(:narmi, :secret), signed_message)
-    calculated_hmac = Base64.urlsafe_encode64(hmac)
+    calculated_hmac = Base64.urlsafe_encode64(hmac).delete("=")
     puts "CALCULATED HMAC"
     puts calculated_hmac
+    puts "TEST PARTS 2"
+    puts test_parts[2]
 
     # Compare the calculated HMAC with the provided HMAC
     if calculated_hmac != test_parts[2]
