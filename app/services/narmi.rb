@@ -148,7 +148,22 @@ class Narmi
   # # ==============================================
   # # PRIVATE ======================================
   # # ==============================================
-  # private
+  private
+
+  # ------------------------------------------------
+  # EXCHANGE-TOKEN ---------------------------------
+  # ------------------------------------------------
+  def exchange_token(code)
+    payload = {
+      "grant_type": "authorization_code",
+      "code": code,
+      "scope": "read write read:profile write:preferences",
+      "client_id": Rails.application.credentials.dig(:narmi, :id),
+      "client_secret": Rails.application.credentials.dig(:narmi, :secret)
+    }
+
+    HTTP.headers("Content-Type" => "application/json").post("https://api.sandbox.narmi.dev/v1/tokens", json: payload).parse
+  end
 
   # # ----------------------------------------------
   # # POST -----------------------------------------
@@ -169,17 +184,45 @@ class Narmi
   # # ----------------------------------------------
   # # GET ------------------------------------------
   # # ----------------------------------------------
-  # def get(route, params)
-  #   begin
-  #     response = @connection.get(route) do |request|
-  #       request.params = params unless params.nil?
-  #     end
-  #     return JSON.parse(response.body)
-  #   rescue => e
-  #     p e.message
-  #     p e.backtrace.join("\n")
-  #   end
-  # end
+
+  def get(endpoint, token, secret)
+    date = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    # Calculate HMAC using OpenSSL
+    signature = OpenSSL::HMAC.digest('sha256', secret, "date: #{date}")
+    signature_base64 = Base64.strict_encode64(signature)
+
+    # Construct the Signature header
+    sig_header = "keyId=\"#{token}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
+
+    # Construct request headers
+    request_headers = {
+      'Authorization' => "Bearer #{token}",
+      'date' => date,
+      'Content-Type' => 'text/javascript',
+      'Signature' => sig_header
+    }
+
+    uri = URI("#{api_root}#{endpoint}")
+
+    # Perform HTTP GET request
+    response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      request = Net::HTTP::Get.new(uri)
+      request_headers.each { |key, value| request[key] = value }
+      http.request(request)
+    end
+
+    response_body = response.body
+
+    begin
+      response_obj = JSON.parse(response_body)
+    rescue JSON::ParserError => e
+      puts "Error parsing JSON: #{e.message}"
+      response_obj = nil
+    end
+
+    response_obj
+  end
 
   # # ----------------------------------------------
   # # DELETE ---------------------------------------
