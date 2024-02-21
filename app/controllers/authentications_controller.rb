@@ -22,20 +22,8 @@ class AuthenticationsController < ApplicationController
       puts Base64.decode64(part)
     end
 
-    # Extract the request parts
-    request_parts = decoded_body.split('&').first.split('=').last.split('.')
-    puts "REQUEST PARTS"
-    puts request_parts
-
-    puts "REQUEST PARTS 0"
-    puts request_parts[0]
-    puts "REQUEST PARTS 1"
-    puts request_parts[1]
-    puts "REQUEST PARTS 2"
-    puts request_parts[2]
-
     # Combine the first two parts to recreate the signed message
-    signed_message = "#{request_parts[0]}.#{request_parts[1]}"
+    signed_message = "#{test_parts[0]}.#{test_parts[1]}"
     puts "SIGNED MESSAGE"
     puts signed_message
 
@@ -48,7 +36,7 @@ class AuthenticationsController < ApplicationController
     puts calculated_hmac
 
     # Compare the calculated HMAC with the provided HMAC
-    if calculated_hmac != request_parts[2]
+    if calculated_hmac != test_parts[2]
       # If HMACs don't match, handle the error accordingly
       puts "failed to validate signed jwt"
       return
