@@ -10,6 +10,8 @@ class AuthenticationsController < ApplicationController
     # check if the secure code is valid
     puts "SECURE CODE"
     puts secure_code
+
+    redirect_to '/'
   end
 
   # permit the secure code to be passed in the request
