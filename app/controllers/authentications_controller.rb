@@ -1,3 +1,6 @@
+require 'base64'
+require 'openssl'
+
 class AuthenticationsController < ApplicationController
 
   # Action method to handle the POST request
