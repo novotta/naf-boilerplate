@@ -25,7 +25,8 @@ class Narmi
   # ----------------------------------------------
   # response = Narmi.new(code).accounts
   def accounts
-    get("/accounts")
+    list = get("/accounts")
+    list["accounts"]
   end
 
 
@@ -45,7 +46,6 @@ class Narmi
       "client_id": Rails.application.credentials.dig(:narmi, :id),
       "client_secret": Rails.application.credentials.dig(:narmi, :secret)
     }
-
     HTTP.headers("Content-Type" => "application/json").post("https://api.sandbox.narmi.dev/v1/tokens", json: payload).parse
   end
 

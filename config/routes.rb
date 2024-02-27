@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   # create a Post route for verifying secure code
   post '/', to: 'authentication#verify'
 
-  namespace :api do # /api/data
+  namespace :api do
+
+    resources :accounts, only: [:index]
 
     get '/data', to: 'tests#index'
 
