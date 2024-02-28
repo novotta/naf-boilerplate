@@ -1,13 +1,16 @@
 // Dependencies
 import React, { useEffect } from 'react';
 import { useDispatch, connect } from 'react-redux';
-import { Button } from '@narmi/design_system';
+import { ContentCard, LoadingShim } from '@narmi/design_system';
 
 // Actions
 import { getAccounts } from '../actions/accounts';
 
+// Components
+import Accounts from '../components/accounts/list';
+
 // Overview
-const Overview = () => {
+const Overview = ({ loading }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,13 +28,11 @@ const Overview = () => {
     <div>
       <h1>Novotta</h1>
       <p>Access Code: {localStorage.getItem('code')}</p>
-      <Button
-  as="button"
-  kind="primary"
-  label="Submit"
-  size="m"
-  type="button"
-/>
+      <LoadingShim isLoading={loading}>
+        <ContentCard>
+          <Accounts />
+        </ContentCard>
+      </LoadingShim>
     </div>
   )
 }
@@ -41,6 +42,7 @@ const mapStateToProps = (state) => {
   console.log("STATE");
   console.log(state);
   return {
+    loading: false,
     //code: state.code.value
   }
 }

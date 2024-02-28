@@ -3,7 +3,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-// Components
+// Narmi Design System
+import "@narmi/design_system/dist/style.css";
 
 // Views
 import Overview from './views/overview';
