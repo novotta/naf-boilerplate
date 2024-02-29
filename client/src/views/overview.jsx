@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { getAccounts } from '../actions/accounts';
 
 // Components
-import Accounts from '../components/accounts/list';
+import List from '../components/accounts/list';
 
 // Overview
 const Overview = ({ loading }) => {
@@ -38,7 +38,9 @@ const Overview = ({ loading }) => {
                   <h3 className="fontFamily--body fontSize--l">Balances</h3>
                 </Row.Item>
               </Row>
-              <Accounts />
+              <List accountType="favorite" />
+              <List accountType="deposit" />
+              <List accountType="credit" />
             </ContentCard>
           </LoadingShim>
         </LeftLayout>

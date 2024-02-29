@@ -4,27 +4,27 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 // Components
-import { Row } from '@narmi/design_system';
+import { formatNumber, Row } from '@narmi/design_system';
 
 // Accounts
-const Accounts = ({ accounts }) => {
+const Accounts = ({ accounts, accountType }) => {
   const favoriteAccounts = accounts.filter(account => account.favorited);
-  const depositAccounts = accounts.filter(account => account.type === 'deposit');
-  const creditAccounts = accounts.filter(account => account.type === 'credit');
+  const listAccounts = accounts.filter(account => account.type === accountType);
+  const printedAccounts = accountType === 'favorite' ? favoriteAccounts : listAccounts;
 
   return (
     <>
-      <div className="account-group-header" role="button" tabindex="0">
+      <AccountGroupHeader role="button" tabIndex="0">
         <div className="fontWeight--bold padding--y--xs">
           <Row alignItems="center" justifyContent="start" gapSize="l">
             <Row.Item>
-              <GroupName>Favorites</GroupName>
+              <GroupName>{accountType} Accounts</GroupName>
             </Row.Item>
           </Row>
         </div>
-      </div>
+      </AccountGroupHeader>
       <div className="account-rows">
-        {favoriteAccounts.map((account) => (
+        {printedAccounts.map((account) => (
           <AccountRow key={account.id} className="padding--y--m">
             <Row alignItems="center" justifyContent="start" gapSize="l">
               <Row.Item>
@@ -34,9 +34,9 @@ const Accounts = ({ accounts }) => {
               </Row.Item>
               <Row.Item shrink>
                 <div className="balance-options">
-                  <span role="button" tabindex="0">
-                    <span class="margin--right--xxs fontColor--primary">
-                      {account.balances.primary}
+                  <span role="button" tabIndex="0">
+                    <span className="margin--right--xxs fontColor--primary">
+                      {formatNumber((account.balances.primary / 100), 'currency')}
                     </span>
                   </span>
                 </div>
@@ -44,55 +44,6 @@ const Accounts = ({ accounts }) => {
             </Row>
             {/* {name, nickname, id, number, type, product, updated_at, users, features, routing, loan_details, source, state, favorited, hidden, out_of_date, updated_from_source_at, check_micr, metadata, balances, fi_name, created_at, verified, fi_svg} */}
           </AccountRow>
-        ))}
-      </div>
-      <div className="account-group-header" role="button" tabindex="0">
-        <div className="fontWeight--bold padding--y--xs">
-          <Row alignItems="center" justifyContent="start" gapSize="l">
-            <Row.Item>
-              <GroupName>Deposit Accounts</GroupName>
-            </Row.Item>
-          </Row>
-        </div>
-      </div>
-      <div className="account-rows">
-        {depositAccounts.map((account) => (
-          <AccountRow key={account.id} className="padding--y--m">
-            <Row alignItems="center" justifyContent="start" gapSize="l">
-              <Row.Item>
-                <span role="button" tabIndex="0">
-                  {account.name} - {account.number.slice(-4)}
-                </span>
-              </Row.Item>
-              <Row.Item shrink>
-                <div className="balance-options">
-                  <span role="button" tabindex="0">
-                    <span class="margin--right--xxs fontColor--primary">
-                      {account.balances.primary}
-                    </span>
-                  </span>
-                </div>
-              </Row.Item>
-            </Row>
-            {/* {name, nickname, id, number, type, product, updated_at, users, features, routing, loan_details, source, state, favorited, hidden, out_of_date, updated_from_source_at, check_micr, metadata, balances, fi_name, created_at, verified, fi_svg} */}
-          </AccountRow>
-        ))}
-      </div>
-      <div className="account-group-header" role="button" tabindex="0">
-        <div className="fontWeight--bold padding--y--xs">
-          <Row alignItems="center" justifyContent="start" gapSize="l">
-            <Row.Item>
-              <GroupName>Credit Accounts</GroupName>
-            </Row.Item>
-          </Row>
-        </div>
-      </div>
-      <div>
-        {creditAccounts.map((account) => (
-          <div key={account.id}>
-            <div>{account.name}</div>
-            {/* {name, nickname, id, number, type, product, updated_at, users, features, routing, loan_details, source, state, favorited, hidden, out_of_date, updated_from_source_at, check_micr, metadata, balances, fi_name, created_at, verified, fi_svg} */}
-          </div>
         ))}
       </div>
     </>
@@ -109,6 +60,12 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(Accounts);
 
 // Styles
+const AccountGroupHeader = styled.div`
+  &:not(:first-of-type) {
+    padding-top: 16px !important;
+  }
+`;
+
 const AccountRow = styled.div`
   border-top: 1px solid rgba(var(--nds-lightest-grey));
 
@@ -122,4 +79,5 @@ const GroupName = styled.div`
   color: RGBA(var(--primary-accessible-color));
   display: flex;
   flex-direction: row;
+  text-transform: capitalize;
 `;
