@@ -9,7 +9,7 @@ import "@narmi/design_system/dist/style.css";
 // Views
 import Overview from './views/overview';
 
-
+// App
 function App() {
   return (
     <Router>
@@ -21,13 +21,14 @@ function App() {
   );
 }
 
+// Map State to Props
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     loading: false
   }
 }
 
+// Map Dispatch to Props
 const mapDispatchToProps = (dispatch) => {
   return {
     //checkAuth: () => dispatch(checkAuth())

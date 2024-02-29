@@ -1,7 +1,8 @@
 // Dependencies
 import React, { useEffect } from 'react';
 import { useDispatch, connect } from 'react-redux';
-import { ContentCard, LoadingShim } from '@narmi/design_system';
+import { ContentCard, LoadingShim, Row } from '@narmi/design_system';
+import styled from 'styled-components';
 
 // Actions
 import { getAccounts } from '../actions/accounts';
@@ -25,15 +26,20 @@ const Overview = ({ loading }) => {
   }, [dispatch]);
 
   return (
-    <div>
+    <NarmiContainer>
       <h1>Novotta</h1>
       <p>Access Code: {localStorage.getItem('code')}</p>
       <LoadingShim isLoading={loading}>
         <ContentCard>
+          <Row alignItems="center">
+            <Row.Item>
+              <h3 className="fontFamily--body fontSize--l">Account details</h3>
+            </Row.Item>
+          </Row>
           <Accounts />
         </ContentCard>
       </LoadingShim>
-    </div>
+    </NarmiContainer>
   )
 }
 
@@ -56,3 +62,8 @@ const mapDispatchToProps = (dispatch) => {
 
 // Export
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
+
+// Styles
+const NarmiContainer = styled.div`
+  width: 1300px;
+`;
