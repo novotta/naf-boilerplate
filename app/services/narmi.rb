@@ -29,7 +29,7 @@ class Narmi
     list["accounts"]
   end
 
-  # response = Narmi.new(code).account(account_id, data)
+  # response = Narmi.new(code).update_account(account_id, data)
   def update_account(account_id, data)
     put("/accounts/#{account_id}", data)
   end
@@ -103,7 +103,7 @@ class Narmi
     request_headers = {
       'Authorization' => "Bearer #{@exchange["token"]}",
       'date' => date,
-      'Content-Type' => 'text/javascript',
+      'Content-Type' => 'application/json',
       'Signature' => sig_header
     }
 

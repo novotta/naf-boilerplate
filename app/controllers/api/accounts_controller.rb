@@ -11,7 +11,7 @@ class Api::AccountsController < ApplicationController
     payload = {
       favorited: true
     }
-    account = Narmi.new(code).account(params[:account_id], payload)
+    account = Narmi.new(request.headers["Authorization"]).update_account(params[:account_id], payload)
     render json: account
   end
 
@@ -19,7 +19,7 @@ class Api::AccountsController < ApplicationController
     payload = {
       favorited: false
     }
-    account = Narmi.new(code).account(params[:account_id], payload)
+    account = Narmi.new(request.headers["Authorization"]).update_account(params[:account_id], payload)
     render json: account
   end
 
