@@ -32,10 +32,10 @@ const Overview = ({ loading }) => {
       <PageLayout>
         <LeftLayout>
           <LoadingShim isLoading={loading}>
-            <ContentCard>
+            <ContentCard kind="elevated">
               <Row alignItems="center">
                 <Row.Item>
-                  <h3 className="fontFamily--body fontSize--l">Account details</h3>
+                  <h3 className="fontFamily--body fontSize--l">Balances</h3>
                 </Row.Item>
               </Row>
               <Accounts />
