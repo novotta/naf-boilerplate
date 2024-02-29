@@ -29,16 +29,21 @@ const Overview = ({ loading }) => {
     <NarmiContainer>
       <h1>Novotta</h1>
       <p>Access Code: {localStorage.getItem('code')}</p>
-      <LoadingShim isLoading={loading}>
-        <ContentCard>
-          <Row alignItems="center">
-            <Row.Item>
-              <h3 className="fontFamily--body fontSize--l">Account details</h3>
-            </Row.Item>
-          </Row>
-          <Accounts />
-        </ContentCard>
-      </LoadingShim>
+      <PageLayout>
+        <LeftLayout>
+          <LoadingShim isLoading={loading}>
+            <ContentCard>
+              <Row alignItems="center">
+                <Row.Item>
+                  <h3 className="fontFamily--body fontSize--l">Account details</h3>
+                </Row.Item>
+              </Row>
+              <Accounts />
+            </ContentCard>
+          </LoadingShim>
+        </LeftLayout>
+        <RightLayout></RightLayout>
+      </PageLayout>
     </NarmiContainer>
   )
 }
@@ -66,4 +71,34 @@ export default connect(mapStateToProps, mapDispatchToProps)(Overview);
 // Styles
 const NarmiContainer = styled.div`
   width: 1300px;
+`;
+
+const PageLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+`;
+
+const LeftLayout = styled.div`
+  order: 2;
+
+  @media screen and (min-width: 1280px) {
+    grid-column-start: 1;
+    order: 1;
+    position: relative;
+  }
+`;
+
+const RightLayout = styled.div`
+  order: 1;
+
+  @media screen and (min-width: 1280px) {
+    grid-column-start: 2;
+    order: 1;
+    position: relative;
+  }
 `;
