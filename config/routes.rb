@@ -5,13 +5,12 @@ Rails.application.routes.draw do
   post '/', to: 'authentication#verify'
 
   namespace :api do
-
-    resources :accounts, only: [:index]
-
-    get '/data', to: 'tests#index'
-
-    resources :dogs
-
+    resources :accounts, only: [:index] do
+      collection do
+        post '/favorite', to: 'accounts#favorite'
+        post '/unfavorite', to: 'accounts#unfavorite'
+      end
+    end
   end
 
   get '*path', to: "static_pages#fallback_index_html", constraints: ->(request) do

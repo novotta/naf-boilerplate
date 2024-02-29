@@ -7,4 +7,22 @@ class Api::AccountsController < ApplicationController
     render json: accounts
   end
 
+  def favorite
+    payload = {
+      favorited: true
+    }
+    account = Narmi.new(code).account(params[:account_id], payload)
+    render json: account
+  end
+
+  def unfavorite
+    payload = {
+      favorited: false
+    }
+    account = Narmi.new(code).account(params[:account_id], payload)
+    render json: account
+  end
+
+  private
+
 end

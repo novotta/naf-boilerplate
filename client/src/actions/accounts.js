@@ -48,7 +48,7 @@ export const favoriteAccount = (id) => {
       dispatch({ type: ACCOUNT_FAVORITE_REQUEST });
       const response = await axios({
 				method: 'POST',
-				url: 'http://localhost:3001/api/accounts',
+				url: 'http://localhost:3001/api/accounts/favorite',
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -87,8 +87,8 @@ export const unfavoriteAccount = (id) => {
     try {
       dispatch({ type: ACCOUNT_UNFAVORITE_REQUEST });
       const response = await axios({
-				method: 'DELETE',
-				url: 'http://localhost:3001/api/accounts/:id',
+				method: 'POST',
+				url: 'http://localhost:3001/api/accounts/unfavorite',
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
