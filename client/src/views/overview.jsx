@@ -44,7 +44,15 @@ const Overview = ({ loading }) => {
             </ContentCard>
           </LoadingShim>
         </LeftLayout>
-        <RightLayout></RightLayout>
+        <RightLayout>
+          <ContentCard kind="elevated">
+            <Row alignItems="center">
+              <Row.Item>
+                <h3 className="fontFamily--body fontSize--l">Messages</h3>
+              </Row.Item>
+            </Row>
+          </ContentCard>
+        </RightLayout>
       </PageLayout>
     </NarmiContainer>
   )
@@ -81,6 +89,7 @@ const PageLayout = styled.div`
 
   @media screen and (min-width: 1280px) {
     display: grid;
+    gap: 1.33rem;
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 `;

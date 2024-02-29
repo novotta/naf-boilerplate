@@ -103,11 +103,11 @@ const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAcc
                 {formatNumber(account.balances.primary / 100, "currency")}
               </span>
             </span>
-            <div class="options" style={{width: 'auto', position: 'relative'}}>
+            <div className="options" style={{width: 'auto', position: 'relative'}}>
               <Popover
                 alignment="end"
                 content={
-                  !isAccountFavorited ? (
+                  !account.favorited ? (
                     <Link
                       to="#"
                       onClick={favoriteAccountHandler}>
