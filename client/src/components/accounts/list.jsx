@@ -14,47 +14,79 @@ const Accounts = ({ accounts }) => {
 
   return (
     <>
-      <h2>Favorites</h2>
+      <div className="account-group-header" role="button" tabindex="0">
+        <div className="fontWeight--bold padding--y--xs">
+          <Row alignItems="center" justifyContent="start" gapSize="l">
+            <Row.Item>
+              <GroupName>Favorites</GroupName>
+            </Row.Item>
+          </Row>
+        </div>
+      </div>
       <div className="account-rows">
         {favoriteAccounts.map((account) => (
           <AccountRow key={account.id} className="padding--y--m">
             <Row alignItems="center" justifyContent="start" gapSize="l">
-                <Row.Item>
-                  <span role="button" tabIndex="0">{account.name} - {account.number.slice(-4)}</span>
-                </Row.Item>
-                <Row.Item shrink>
-                  <div className="balance-options">
-                    <span role="button" tabindex="0">
-                      <span class="margin--right--xxs fontColor--primary">{account.balances.primary}</span>
+              <Row.Item>
+                <span role="button" tabIndex="0">
+                  {account.name} - {account.number.slice(-4)}
+                </span>
+              </Row.Item>
+              <Row.Item shrink>
+                <div className="balance-options">
+                  <span role="button" tabindex="0">
+                    <span class="margin--right--xxs fontColor--primary">
+                      {account.balances.primary}
                     </span>
-                  </div>
-                </Row.Item>
+                  </span>
+                </div>
+              </Row.Item>
             </Row>
             {/* {name, nickname, id, number, type, product, updated_at, users, features, routing, loan_details, source, state, favorited, hidden, out_of_date, updated_from_source_at, check_micr, metadata, balances, fi_name, created_at, verified, fi_svg} */}
           </AccountRow>
         ))}
       </div>
-      <h2>Deposit Accounts</h2>
+      <div className="account-group-header" role="button" tabindex="0">
+        <div className="fontWeight--bold padding--y--xs">
+          <Row alignItems="center" justifyContent="start" gapSize="l">
+            <Row.Item>
+              <GroupName>Deposit Accounts</GroupName>
+            </Row.Item>
+          </Row>
+        </div>
+      </div>
       <div className="account-rows">
         {depositAccounts.map((account) => (
           <AccountRow key={account.id} className="padding--y--m">
             <Row alignItems="center" justifyContent="start" gapSize="l">
-                <Row.Item>
-                  <span role="button" tabIndex="0">{account.name} - {account.number.slice(-4)}</span>
-                </Row.Item>
-                <Row.Item shrink>
-                  <div className="balance-options">
-                    <span role="button" tabindex="0">
-                      <span class="margin--right--xxs fontColor--primary">{account.balances.primary}</span>
+              <Row.Item>
+                <span role="button" tabIndex="0">
+                  {account.name} - {account.number.slice(-4)}
+                </span>
+              </Row.Item>
+              <Row.Item shrink>
+                <div className="balance-options">
+                  <span role="button" tabindex="0">
+                    <span class="margin--right--xxs fontColor--primary">
+                      {account.balances.primary}
                     </span>
-                  </div>
-                </Row.Item>
+                  </span>
+                </div>
+              </Row.Item>
             </Row>
             {/* {name, nickname, id, number, type, product, updated_at, users, features, routing, loan_details, source, state, favorited, hidden, out_of_date, updated_from_source_at, check_micr, metadata, balances, fi_name, created_at, verified, fi_svg} */}
           </AccountRow>
         ))}
       </div>
-      <h2>Credit Accounts</h2>
+      <div className="account-group-header" role="button" tabindex="0">
+        <div className="fontWeight--bold padding--y--xs">
+          <Row alignItems="center" justifyContent="start" gapSize="l">
+            <Row.Item>
+              <GroupName>Credit Accounts</GroupName>
+            </Row.Item>
+          </Row>
+        </div>
+      </div>
       <div>
         {creditAccounts.map((account) => (
           <div key={account.id}>
@@ -84,4 +116,10 @@ const AccountRow = styled.div`
     background: RGBA(var(--theme-rgb-primary), var(--hover-opacity));
     cursor: pointer;
   }
+`;
+
+const GroupName = styled.div`
+  color: RGBA(var(--primary-accessible-color));
+  display: flex;
+  flex-direction: row;
 `;
