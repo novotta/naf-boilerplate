@@ -3,7 +3,7 @@
 class Api::AccountsController < ApplicationController
 
   def index
-    accounts = Narmi.new(params[:code]).accounts
+    accounts = Narmi.new(request.headers["Authorization"]).accounts
     render json: accounts
   end
 

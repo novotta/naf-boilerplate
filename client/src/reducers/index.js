@@ -3,12 +3,16 @@ import { combineReducers } from "redux";
 
 // Reducers
 import {
-  accountListReducer
+  accountListReducer,
+  accountFavoriteReducer,
+  accountUnfavoriteReducer
 } from "./accounts";
 
 
 const rootReducer = combineReducers({
-  accountList: accountListReducer
+  accountList: accountListReducer,
+  accountFavorite: accountFavoriteReducer,
+  accountUnfavorite: accountUnfavoriteReducer
 })
 
 export default rootReducer
