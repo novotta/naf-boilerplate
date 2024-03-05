@@ -11,6 +11,8 @@ Rails.application.routes.draw do
         post '/unfavorite', to: 'accounts#unfavorite'
       end
     end
+    resources :threads, only: [:index] do
+    end
   end
 
   get '*path', to: "static_pages#fallback_index_html", constraints: ->(request) do

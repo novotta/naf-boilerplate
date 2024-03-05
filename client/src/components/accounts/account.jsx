@@ -19,17 +19,17 @@ import {
 // Account
 const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAccount, resetUnfavoriteAccount, accountFavorite, accountUnfavorite }) => {
 
-  const [isAccountFavorited, setIsAccountFavorited] = useState(false);
+  // const [isAccountFavorited, setIsAccountFavorited] = useState(false);
 
-  const { error: errorAccountFavorite, success: successAccountFavorite } = accountFavorite;
-  const { error: errorAccountUnfavorite, success: successAccountUnfavorite } = accountUnfavorite;
+  // const { error: errorAccountFavorite, success: successAccountFavorite } = accountFavorite;
+  // const { error: errorAccountUnfavorite, success: successAccountUnfavorite } = accountUnfavorite;
 
-  const favoriteAccountHandler = () => {
-    favoriteAccount(account.id);
-  };
-  const unfavoriteAccountHandler = () => {
-    unfavoriteAccount(account.id);
-  };
+  // const favoriteAccountHandler = () => {
+  //   favoriteAccount(account.id);
+  // };
+  // const unfavoriteAccountHandler = () => {
+  //   unfavoriteAccount(account.id);
+  // };
 
   useEffect(() => {
     // const index = post.likes.findIndex(
@@ -67,21 +67,21 @@ const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAcc
     //   // });
     //   resetUnlikePost();
     // }
-    if (successAccountFavorite) {
-      setIsAccountFavorited(true);
-      resetFavoriteAccount();
-    }
-    if (successAccountUnfavorite) {
-      setIsAccountFavorited(false);
-      resetUnfavoriteAccount();
-    }
+    // if (successAccountFavorite) {
+    //   setIsAccountFavorited(true);
+    //   resetFavoriteAccount();
+    // }
+    // if (successAccountUnfavorite) {
+    //   setIsAccountFavorited(false);
+    //   resetUnfavoriteAccount();
+    // }
   }, [
-    resetUnfavoriteAccount,
-    resetFavoriteAccount,
-    errorAccountFavorite,
-    errorAccountUnfavorite,
-    successAccountFavorite,
-    successAccountUnfavorite,
+    // resetUnfavoriteAccount,
+    // resetFavoriteAccount,
+    // errorAccountFavorite,
+    // errorAccountUnfavorite,
+    // successAccountFavorite,
+    // successAccountUnfavorite,
     // post.likes,
     // showAlert,
     // userInfo,
@@ -104,31 +104,7 @@ const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAcc
               </span>
             </span>
             <div className="options" style={{width: 'auto', position: 'relative'}}>
-              <Popover
-                alignment="end"
-                content={
-                  !account.favorited ? (
-                    <Link
-                      to="#"
-                      onClick={favoriteAccountHandler}>
-                      Favorite
-                    </Link>
-                  ) : (
-                    <Link
-                      to="#"
-                      onClick={unfavoriteAccountHandler}>
-                      Unfavorite
-                    </Link>
-                  )
-                }
-                onUserDismiss={function noRefCheck() {}}
-                side="bottom"
-                wrapperDisplay="inline-flex"
-              >
-                <div className="options-traffic-light  ">
-                  <span className="clickable narmi-icon-more-vertical"></span>
-                </div>
-              </Popover>
+
             </div>
           </BalanceOptions>
         </Row.Item>

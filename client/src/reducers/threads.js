@@ -1,9 +1,8 @@
 import update from "immutability-helper";
 import {
-  SET_ACCOUNTS,
-  SET_ACCOUNT_LOADING
-} from "../actions/accounts";
-// import { SET_LOADING_STATUS } from "../actions/user";
+  SET_THREADS,
+  SET_THREAD_LOADING
+} from "../actions/threads";
 
 const initialState = {
   form: false,
@@ -20,11 +19,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_ACCOUNT_LOADING:
+    case SET_THREAD_LOADING:
       return update(state, {
         loading: { $set: action.data }
       });
-    case SET_ACCOUNTS:
+    case SET_THREADS:
       return update(state, {
         data: { $set: action.data }
       });

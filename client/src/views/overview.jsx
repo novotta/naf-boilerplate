@@ -1,18 +1,24 @@
 // Dependencies
 import React, { useEffect } from 'react';
-import { useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { ContentCard, LoadingShim, Row } from '@narmi/design_system';
 import styled from 'styled-components';
 
 // Actions
-import { getAccounts } from '../actions/accounts';
+import {
+  getAccounts
+} from '../actions/accounts';
+import {
+  getThreads
+} from '../actions/threads';
 
 // Components
-import List from '../components/accounts/list';
+import AccountsList from '../components/accounts/list';
+import ThreadsList from '../components/threads/list';
+import Threads from '../reducers/threads';
 
 // Overview
-const Overview = ({ loading }) => {
-  const dispatch = useDispatch();
+const Overview = (props) => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -20,60 +26,64 @@ const Overview = ({ loading }) => {
 
     if (codeFromURL) {
       localStorage.setItem('code', codeFromURL);
-      // After dispatching the setCode, call the getAccounts action
-      dispatch(getAccounts());
+      props.getAccounts();
+      props.getThreads();
     }
-  }, [dispatch]);
+  }, []);
 
-  return (
-    <NarmiContainer>
-      <h1>Novotta</h1>
-      <p>Access Code: {localStorage.getItem('code')}</p>
-      <PageLayout>
-        <LeftLayout>
-          <LoadingShim isLoading={loading}>
+  if (props.accounts.data !== null && props.threads.data !== null) {
+    return (
+      <NarmiContainer>
+        <h1>Novotta</h1>
+        <p>Access Code: {localStorage.getItem('code')}</p>
+        <PageLayout>
+          <LeftLayout>
             <ContentCard kind="elevated">
               <Row alignItems="center">
                 <Row.Item>
                   <h3 className="fontFamily--body fontSize--l">Balances</h3>
                 </Row.Item>
               </Row>
-              <List accountType="favorite" />
-              <List accountType="deposit" />
-              <List accountType="credit" />
+              <AccountsList state={props.accounts} accountType="favorite" />
+              <AccountsList state={props.accounts} accountType="deposit" />
+              <AccountsList state={props.accounts} accountType="credit" />
             </ContentCard>
-          </LoadingShim>
-        </LeftLayout>
-        <RightLayout>
-          <ContentCard kind="elevated">
-            <Row alignItems="center">
-              <Row.Item>
-                <h3 className="fontFamily--body fontSize--l">Messages</h3>
-              </Row.Item>
-            </Row>
-          </ContentCard>
-        </RightLayout>
-      </PageLayout>
-    </NarmiContainer>
-  )
+          </LeftLayout>
+          <RightLayout>
+            <ContentCard kind="elevated">
+              <Row alignItems="center">
+                <Row.Item>
+                  <h3 className="fontFamily--body fontSize--l">Messages</h3>
+                </Row.Item>
+              </Row>
+              <ThreadsList state={props.threads} />
+            </ContentCard>
+          </RightLayout>
+        </PageLayout>
+      </NarmiContainer>
+    )
+  }
+
+  return <LoadingShim true />;
 }
 
 // Map State to Props
 const mapStateToProps = (state) => {
-  console.log("STATE");
-  console.log(state);
+  const {
+    accounts,
+    threads
+  } = state;
   return {
-    loading: false,
-    //code: state.code.value
-  }
-}
+    accounts,
+    threads
+  };
+};
 
 // Map Dispatch to Props
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //getAccounts: () => dispatch(getAccounts()),
-  }
-}
+const mapDispatchToProps = {
+  getAccounts,
+  getThreads
+};
 
 // Export
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);

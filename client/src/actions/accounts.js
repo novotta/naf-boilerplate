@@ -3,9 +3,6 @@ import axios from 'axios';
 
 // Types
 import {
-	ACCOUNT_LIST_FAIL,
-	ACCOUNT_LIST_REQUEST,
-	ACCOUNT_LIST_SUCCESS,
   ACCOUNT_LIST_UPDATE_FAVORITE,
   ACCOUNT_LIST_UPDATE_UNFAVORITE,
   ACCOUNT_FAVORITE_FAIL,
@@ -18,11 +15,24 @@ import {
   ACCOUNT_UNFAVORITE_SUCCESS
 } from './types'
 
+// Set Account Loading
+export const SET_ACCOUNT_LOADING = "setAccountLoading";
+export function setAccountLoading(data) {
+  return function(dispatch) {
+    dispatch({
+      type: SET_ACCOUNT_LOADING,
+      data: data
+    });
+  };
+}
+
+
 // Get Accounts
+export const SET_ACCOUNTS = "setAccounts";
 export const getAccounts = () => {
   return async (dispatch) => {
     try {
-      dispatch({ type: ACCOUNT_LIST_REQUEST });
+      dispatch(setAccountLoading(true));
       const response = await axios({
 				method: 'GET',
 				url: 'http://localhost:3001/api/accounts',
@@ -33,13 +43,19 @@ export const getAccounts = () => {
 				},
 				crossdomain: true,
 			});
-      dispatch({ type: ACCOUNT_LIST_SUCCESS, payload: response.data });
+      dispatch({ type: SET_ACCOUNTS, data: response.data });
+      dispatch(setAccountLoading(false));
     } catch (error) {
       console.log(error);
-      dispatch({ type: ACCOUNT_LIST_FAIL, payload: error });
+      dispatch({ type: SET_ACCOUNTS, payload: [] });
+      dispatch(setAccountLoading(false));
     }
   };
 };
+
+
+
+
 
 // Favorite Account
 export const favoriteAccount = (id) => {

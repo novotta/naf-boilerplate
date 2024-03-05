@@ -23,11 +23,6 @@ class AuthenticationController < ApplicationController
       return
     end
 
-    # TODO: Remove this test call
-    puts "TEST CALL"
-    response = Narmi.new(authentication_params[:code]).accounts
-    puts response.inspect
-
     redirect_to "/?code=#{authentication_params[:code]}"
   end
 

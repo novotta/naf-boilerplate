@@ -1,18 +1,29 @@
-// Dependencies
-import { combineReducers } from "redux";
 
-// Reducers
-import {
-  accountListReducer,
-  accountFavoriteReducer,
-  accountUnfavoriteReducer
-} from "./accounts";
+// // Reducers
+// import {
+//   accountListReducer,
+//   accountFavoriteReducer,
+//   accountUnfavoriteReducer
+// } from "./OLDaccounts";
 
 
+// const rootReducer = combineReducers({
+//   accountList: accountListReducer,
+//   accountFavorite: accountFavoriteReducer,
+//   accountUnfavorite: accountUnfavoriteReducer
+// })
+
+
+// // Dependencies
+import { combineReducers } from 'redux';
+import accounts from './accounts';
+import threads from './threads';
+
+// Root Reducer
 const rootReducer = combineReducers({
-  accountList: accountListReducer,
-  accountFavorite: accountFavoriteReducer,
-  accountUnfavorite: accountUnfavoriteReducer
-})
+	accounts,
+  threads
+});
 
-export default rootReducer
+// Export
+export default rootReducer;

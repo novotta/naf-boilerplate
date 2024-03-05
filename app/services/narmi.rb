@@ -35,6 +35,38 @@ class Narmi
   end
 
   # ==============================================
+  # THREADS ======================================
+  # ==============================================
+
+  # ----------------------------------------------
+  # LIST -----------------------------------------
+  # ----------------------------------------------
+  # response = Narmi.new(code).threads
+  def threads
+    list = get("/threads")
+    puts "THREADS"
+    puts list
+    list["threads"]
+  end
+
+  def create_thread(data)
+    post("/threads", data)
+  end
+
+  def messages(thread_id)
+    list = get("/threads/#{thread_id}/messages")
+    puts "MESSAGES"
+    puts list
+    list["messages"]
+  end
+
+  def create_message(thread_id, data)
+    post("/threads/#{thread_id}/messages", data)
+  end
+
+
+
+  # ==============================================
   # PRIVATE ======================================
   # ==============================================
   private
@@ -75,6 +107,41 @@ class Narmi
     }
 
     response = @http.get(BASE_URL + endpoint, headers: request_headers)
+
+    begin
+      data = JSON.parse(response.body)
+    rescue JSON::ParserError => e
+      puts "Error parsing JSON: #{e.message}"
+      data = nil
+    end
+
+    data
+  end
+
+  # ----------------------------------------------
+  # POST -----------------------------------------
+  # ----------------------------------------------
+  def post(endpoint, data)
+    date = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    # Calculate HMAC using OpenSSL
+    signature = OpenSSL::HMAC.digest('sha256', @exchange["secret"] , "date: #{date}")
+    signature_base64 = Base64.strict_encode64(signature)
+
+    # Construct the Signature header
+    sig_header = "keyId=\"#{@exchange["token"]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
+
+    # Construct request headers
+    request_headers = {
+      'Authorization' => "Bearer #{@exchange["token"]}",
+      'date' => date,
+      'Content-Type' => 'application/json',
+      'Signature' => sig_header
+    }
+
+    response = @http.post(BASE_URL + endpoint, headers: request_headers, body: data.to_json)
+    puts "POST"
+    puts response.body
 
     begin
       data = JSON.parse(response.body)
