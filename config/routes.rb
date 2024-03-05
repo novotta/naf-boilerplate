@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   post '/', to: 'authentication#verify'
 
   namespace :api do
-    resources :accounts, only: [:index] do
+    resources :accounts, only: [:index, :update] do
       collection do
         post '/favorite', to: 'accounts#favorite'
         post '/unfavorite', to: 'accounts#unfavorite'

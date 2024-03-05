@@ -1,12 +1,16 @@
 // Dependencies
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ContentCard, LoadingShim, Row } from '@narmi/design_system';
+import { ContentCard, Dialog, LoadingShim, Row } from '@narmi/design_system';
 import styled from 'styled-components';
 
 // Actions
 import {
-  getAccounts
+  editAccount,
+  getAccounts,
+  setAccountError,
+  setAccountSaved,
+  setAccountTouched
 } from '../actions/accounts';
 import {
   getThreads
@@ -14,11 +18,28 @@ import {
 
 // Components
 import AccountsList from '../components/accounts/list';
+import AccountModal from '../components/accounts/modal';
+import errors from '../components/errors';
 import ThreadsList from '../components/threads/list';
-import Threads from '../reducers/threads';
+
+// Initial State
+const initialState = {
+  account: {
+    id: null,
+    name: '',
+    nickname: '',
+    favorited: false
+  }
+};
 
 // Overview
 const Overview = (props) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [account, setAccount] = useState(initialState.account);
+
+  const state = {
+    account
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -30,6 +51,30 @@ const Overview = (props) => {
       props.getThreads();
     }
   }, []);
+
+  const editAccount = () => {
+    props.setAccountError(null);
+    const { name, favorited } = account;
+    if (!name || !favorited) {
+      props.setAccountError(errors['Missing Field']);
+    } else {
+      props.setAccountTouched(false);
+      props.editAccount({ account });
+    }
+  };
+
+  const setAccountValue = (e) => {
+    props.setAccountTouched(true);
+    props.setAccountSaved(false);
+    if (e != null && e.target != null) {
+      const { name, value } = e.target;
+
+      setAccount((account) => ({
+        ...account,
+        [name]: value,
+      }));
+    }
+  };
 
   if (props.accounts.data !== null && props.threads.data !== null) {
     return (
@@ -60,6 +105,15 @@ const Overview = (props) => {
             </ContentCard>
           </RightLayout>
         </PageLayout>
+        <Dialog isOpen={isDialogOpen} title={`Edit Account`} onUserDismiss={() => { setIsDialogOpen(false); }}>
+          <AccountModal
+            setValue={setAccountValue}
+            state={state}
+            account={props.accounts}
+            editAccount={editAccount}
+            setAccountTouched={props.setAccountTouched}
+          />
+        </Dialog>
       </NarmiContainer>
     )
   }
@@ -82,6 +136,10 @@ const mapStateToProps = (state) => {
 // Map Dispatch to Props
 const mapDispatchToProps = {
   getAccounts,
+  editAccount,
+  setAccountError,
+  setAccountSaved,
+  setAccountTouched,
   getThreads
 };
 

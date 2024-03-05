@@ -26,6 +26,38 @@ export function setAccountLoading(data) {
   };
 }
 
+// Set Account Error
+export const SET_ACCOUNT_ERROR = "setAccountError";
+export function setAccountError(data) {
+  return function(dispatch) {
+    dispatch({
+      type: SET_ACCOUNT_ERROR,
+      data: data
+    });
+  };
+}
+
+// Set Account Saved
+export const SET_ACCOUNT_SAVED = "setAccountSaved";
+export function setAccountSaved(data) {
+  return function(dispatch) {
+    dispatch({
+      type: SET_ACCOUNT_SAVED,
+      data: data
+    });
+  };
+}
+
+// Set Account Touched
+export const SET_ACCOUNT_TOUCHED = "setAccountTouched";
+export function setAccountTouched(data) {
+  return function(dispatch) {
+    dispatch({
+      type: SET_ACCOUNT_TOUCHED,
+      data: data
+    });
+  };
+}
 
 // Get Accounts
 export const SET_ACCOUNTS = "setAccounts";
@@ -52,6 +84,62 @@ export const getAccounts = () => {
     }
   };
 };
+
+// Edit Account
+export function editAccount(data) {
+  // return function(dispatch, getState) {
+  //   return new Promise(function(resolve, reject) {
+  //     superagent
+  //       .put(config.backendUrl + "/goals/" + data.goal.id)
+  //       .set("Authorization", "Bearer " + getState().auth.data.vendorKey)
+  //       .set("Accept", "application/json")
+  //       .set("Content-Type", "application/json")
+  //       .send(data.goal)
+  //       .end(function(err, res) {
+  //         if (err) {
+  //           return;
+  //         }
+
+  //         dispatch(setGoalSaved(true));
+  //         dispatch(getGoals());
+  //         // Get time until completion
+  //         const safeRecurringState = recurringState || {};
+  //         const recurringDelta = {
+  //           id: data.goal.id,
+  //           frequency: safeRecurringState.frequency,
+  //           amount: safeRecurringState.amount,
+  //           repeats: safeRecurringState.repeats,
+  //           startDt: moment.utc(safeRecurringState.startDt).format()
+  //         };
+  //         dispatch(getTimeUntilCompl(recurringDelta));
+  //         dispatch(getNotifications());
+  //       });
+  //   });
+  // };
+
+  return async (dispatch) => {
+    try {
+      const response = await axios({
+				method: 'PATCH',
+				url: 'http://localhost:3001/api/accounts/' + data.account.id,
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+					Authorization: getCode()
+				},
+        data: {
+          account: data.account
+        },
+				crossdomain: true,
+			});
+      console.log("ACCOUNT UPDATED");
+      dispatch(setAccountSaved(true));
+      dispatch(getAccounts());
+    } catch (error) {
+      console.log("ACCOUNT UPDATE ERROR");
+    }
+  };
+}
 
 
 
