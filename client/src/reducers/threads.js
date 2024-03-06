@@ -2,7 +2,7 @@ import update from "immutability-helper";
 import {
   SET_THREADS,
   SET_THREAD_LOADING,
-  SELECT_THREAD
+  ADD_MESSAGE
 } from "../actions/threads";
 
 const initialState = {
@@ -23,11 +23,10 @@ export default function(state = initialState, action) {
       return update(state, {
         data: { $set: action.data }
       });
-    case SELECT_THREAD:
-      return {
-        ...state,
-        selectedThread: action.payload,
-      };
+    case ADD_MESSAGE:
+      return update(state, {
+
+      })
 
     default:
       return state;

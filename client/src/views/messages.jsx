@@ -6,7 +6,8 @@ import styled from 'styled-components';
 
 // Actions
 import {
-  getThreads
+  getThreads,
+  addMessage
 } from '../actions/threads';
 
 // Components
@@ -15,6 +16,7 @@ import { ContentCard, Row } from '@narmi/design_system';
 // Messages
 const Messages = (props) => {
   const [selectedThread, setSelectedThread] = useState(null);
+  const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
     props.getThreads();
@@ -22,6 +24,15 @@ const Messages = (props) => {
 
   const handleThreadClick = (thread) => {
     setSelectedThread(thread);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (selectedThread) {
+      await props.addMessage(selectedThread, newMessage);
+      setNewMessage('');
+      props.getThreads();
+    }
   };
 
   if (props.threads.data !== null) {
@@ -44,7 +55,7 @@ const Messages = (props) => {
                   <Row.Item>
                     {/* if selectedThread.id === thread.id, add class "selected" */}
                     <ThreadItem
-                      className={selectedThread && selectedThread.id === thread.id ? 'selected' : ''}
+                      className={(selectedThread && selectedThread.id === thread.id ? 'selected' : '')}
                       onClick={() => handleThreadClick(thread)}
                     >
                       <div className="fontWeight--bold">{thread.subject}</div>
@@ -55,19 +66,22 @@ const Messages = (props) => {
               ))}
             </LeftLayout>
             <RightLayout>
-              <h1>Selected Message:</h1>
               {selectedThread ? (
                 <div>
-                  <p>Name: {selectedThread.subject}</p>
-                  <p>Attribute: {selectedThread.updated_at}</p>
+                  <h3>{selectedThread.subject}</h3>
                   {selectedThread.messages.map((message) => (
                     <div key={message.id}>
-                      <p>{message.body}</p>
+                      <div>{message.body}</div>
+                      <div>{message.created_at}</div>
                     </div>
                   ))}
+                  <form onSubmit={handleSubmit}>
+            <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+            <button type="submit">Add Message</button>
+          </form>
                 </div>
               ) : (
-                <p>No item selected</p>
+                <p>No message selected.</p>
               )}
             </RightLayout>
           </PageLayout>
@@ -80,16 +94,19 @@ const Messages = (props) => {
 // Map State to Props
 const mapStateToProps = (state) => {
   const {
-    threads
+    threads,
+    addMessage
   } = state;
   return {
-    threads
+    threads,
+    addMessage
   };
 };
 
 // Map Dispatch to Props
 const mapDispatchToProps = {
-  getThreads
+  getThreads,
+  addMessage
 };
 
 // Export
