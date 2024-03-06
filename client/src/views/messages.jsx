@@ -6,17 +6,37 @@ import styled from 'styled-components';
 
 // Actions
 import {
+  createThread,
   getThreads,
+  setThreadError,
+  setThreadSaved,
+  setThreadTouched,
   addMessage
 } from '../actions/threads';
 
 // Components
-import { ContentCard, formatDate, Row } from '@narmi/design_system';
+import { ContentCard, Dialog, formatDate, Row } from '@narmi/design_system';
+import ThreadModal from '../components/threads/modal';
+
+// Initial State
+const initialState = {
+  thread: {
+    id: null,
+    subject: '',
+    body: '',
+  }
+};
 
 // Messages
 const Messages = (props) => {
   const [selectedThread, setSelectedThread] = useState(null);
   const [newMessage, setNewMessage] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [thread, setThread] = useState(initialState.thread);
+
+  const state = {
+    thread
+  };
 
   useEffect(() => {
     props.getThreads();
@@ -35,6 +55,35 @@ const Messages = (props) => {
     }
   };
 
+  // const createThreadModal = (data) => {
+  //   window.scrollTo(0, 0);
+  //   setThread({
+  //     id: data.id,
+  //     subject: data.subject,
+  //     body: data.body
+  //   });
+  //   setIsDialogOpen(true);
+  // };
+
+  const createThread = () => {
+    props.setThreadError(null);
+    const { subject, body } = thread;
+    props.setThreadTouched(false);
+    props.createThread({ thread });
+  };
+
+  const setThreadValue = (e) => {
+    props.setThreadTouched(true);
+    props.setThreadSaved(false);
+    if (e != null && e.target != null) {
+      const { subject, value } = e.target;
+      setThread((thread) => ({
+        ...thread,
+        [subject]: value,
+      }));
+    }
+  };
+
   if (props.threads.data !== null) {
     return (
       <NarmiContainer>
@@ -44,7 +93,7 @@ const Messages = (props) => {
             <Link to="/">Back to Overview</Link>
           </Row.Item>
           <Row.Item>
-            <button>Add Message</button>
+            <button onClick={() => setIsDialogOpen(true)} >Add Message</button>
           </Row.Item>
         </Row>
         <ContentCard kind="elevated" paddingSize="none">
@@ -86,6 +135,15 @@ const Messages = (props) => {
             </RightLayout>
           </PageLayout>
         </ContentCard>
+        <Dialog isOpen={isDialogOpen} title={`Create Message`} onUserDismiss={() => { setIsDialogOpen(false); }}>
+          <ThreadModal
+            setValue={setThreadValue}
+            state={state}
+            thread={state.thread}
+            createThread={createThread}
+            setThreadTouched={props.setThreadTouched}
+          />
+        </Dialog>
       </NarmiContainer>
     )
   }

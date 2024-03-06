@@ -2,7 +2,10 @@ import update from "immutability-helper";
 import {
   SET_THREADS,
   SET_THREAD_LOADING,
-  ADD_MESSAGE
+  ADD_MESSAGE,
+  SET_THREAD_ERROR,
+  SET_THREAD_SAVED,
+  SET_THREAD_TOUCHED
 } from "../actions/threads";
 
 const initialState = {
@@ -18,6 +21,18 @@ export default function(state = initialState, action) {
     case SET_THREAD_LOADING:
       return update(state, {
         loading: { $set: action.data }
+      });
+    case SET_THREAD_ERROR:
+      return update(state, {
+        error: { $set: action.data }
+      });
+    case SET_THREAD_SAVED:
+      return update(state, {
+        saved: { $set: action.data }
+      });
+    case SET_THREAD_TOUCHED:
+      return update(state, {
+        touched: { $set: action.data }
       });
     case SET_THREADS:
       return update(state, {

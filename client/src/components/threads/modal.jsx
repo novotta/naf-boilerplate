@@ -1,10 +1,6 @@
+// Dependencies
 import React, { useState, useEffect } from "react";
-// import classnames from "classnames";
-// import GoalSettings from "./goalSettings";
-// import EditGoal from "./editGoal";
-// import Alert from "./alert";
-// import DeleteAlert from "./deleteAlert";
-// import GoalTransfer from "./goalTransfer";
+
 
 const ThreadModal = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -112,4 +108,4 @@ const ThreadModal = props => {
   );
 };
 
-export default AccountModal;
+export default ThreadModal;

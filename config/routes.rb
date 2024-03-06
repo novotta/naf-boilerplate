@@ -11,9 +11,8 @@ Rails.application.routes.draw do
         post '/unfavorite', to: 'accounts#unfavorite'
       end
     end
-    resources :threads, only: [:index] do
+    resources :threads, only: [:index, :create] do
       member do
-        get '/messages', to: 'threads#messages'
         post '/messages', to: 'threads#create_message'
       end
     end
