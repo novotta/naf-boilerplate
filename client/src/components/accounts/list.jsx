@@ -8,15 +8,15 @@ import Account from './account';
 
 // Accounts
 const Accounts = (props) => {
-  if (!props.state.data || props.state.data.length === 0) {
+  if (!props.accounts.data || props.accounts.data.length === 0) {
     return (
       <>
         <p>No accounts found.</p>
       </>
     );
   } else {
-    const favoriteAccounts = props.state.data.filter(account => account.favorited);
-    const listAccounts = props.state.data.filter(account => account.type === props.accountType);
+    const favoriteAccounts = props.accounts.data.filter(account => account.favorited);
+    const listAccounts = props.accounts.data.filter(account => account.type === props.accountType);
     const printedAccounts = props.accountType === 'favorite' ? favoriteAccounts : listAccounts;
 
     return (
@@ -32,7 +32,12 @@ const Accounts = (props) => {
         </AccountGroupHeader>
         <div className="account-rows">
           {printedAccounts.map((account) => (
-            <Account key={account.id} account={account} />
+            <Account
+              key={account.id}
+              account={account}
+              editFavorited={props.editFavorited}
+              editAccountModal={props.editAccountModal}
+            />
           ))}
         </div>
       </>

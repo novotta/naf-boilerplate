@@ -27,14 +27,14 @@ const initialState = {
   account: {
     id: null,
     name: '',
-    nickname: '',
-    favorited: false
+    favorited: false,
+    hidden: false
   }
 };
 
 // Overview
 const Overview = (props) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [account, setAccount] = useState(initialState.account);
 
   const state = {
@@ -52,18 +52,36 @@ const Overview = (props) => {
     }
   }, []);
 
+  const editAccountModal = (data) => {
+    window.scrollTo(0, 0);
+    console.log('EDIT ACCOUNT MODAL');
+    console.log(data);
+    setAccount({
+      id: data.id,
+      name: data.name,
+      favorited: data.favorited,
+      hidden: false
+    });
+    setIsDialogOpen(true);
+  };
+
   const editAccount = () => {
     props.setAccountError(null);
-    const { name, favorited } = account;
-    if (!name || !favorited) {
-      props.setAccountError(errors['Missing Field']);
-    } else {
-      props.setAccountTouched(false);
-      props.editAccount({ account });
-    }
+    const { name, favorited, hidden } = account;
+
+    console.log('EDIT ACCOUNT OVERVIEW')
+    props.setAccountTouched(false);
+    props.editAccount({ account });
+  };
+
+  const editFavorited = (account, favorited) => {
+    props.setAccountError(null);
+    props.setAccountTouched(false);
+    props.editAccount({ account: {id: account.id, name: account.name, favorited: favorited, hidden: false }});
   };
 
   const setAccountValue = (e) => {
+    console.log('SET ACCOUNT VALUE');
     props.setAccountTouched(true);
     props.setAccountSaved(false);
     if (e != null && e.target != null) {
@@ -89,9 +107,24 @@ const Overview = (props) => {
                   <h3 className="fontFamily--body fontSize--l">Balances</h3>
                 </Row.Item>
               </Row>
-              <AccountsList state={props.accounts} accountType="favorite" />
-              <AccountsList state={props.accounts} accountType="deposit" />
-              <AccountsList state={props.accounts} accountType="credit" />
+              <AccountsList
+                accounts={props.accounts}
+                accountType="favorite"
+                editFavorited={editFavorited}
+                editAccountModal={editAccountModal}
+              />
+              <AccountsList
+                accounts={props.accounts}
+                accountType="deposit"
+                editFavorited={editFavorited}
+                editAccountModal={editAccountModal}
+              />
+              <AccountsList
+                accounts={props.accounts}
+                accountType="credit"
+                editFavorited={editFavorited}
+                editAccountModal={editAccountModal}
+              />
             </ContentCard>
           </LeftLayout>
           <RightLayout>
@@ -109,7 +142,7 @@ const Overview = (props) => {
           <AccountModal
             setValue={setAccountValue}
             state={state}
-            account={props.accounts}
+            account={state.account}
             editAccount={editAccount}
             setAccountTouched={props.setAccountTouched}
           />
@@ -124,10 +157,12 @@ const Overview = (props) => {
 // Map State to Props
 const mapStateToProps = (state) => {
   const {
+    account,
     accounts,
     threads
   } = state;
   return {
+    account,
     accounts,
     threads
   };

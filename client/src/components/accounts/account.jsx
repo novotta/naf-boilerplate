@@ -1,92 +1,14 @@
 // Dependencies
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { connect } from 'react-redux';
+import React from "react";
 import styled from 'styled-components';
 
 // Components
 import { formatNumber, Popover, Row } from '@narmi/design_system';
 
-// Actions
-import {
-  favoriteAccount,
-  unfavoriteAccount,
-  resetFavoriteAccount,
-  resetUnfavoriteAccount,
-} from '../../actions/accounts';
-
-
 // Account
-const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAccount, resetUnfavoriteAccount, accountFavorite, accountUnfavorite }) => {
+const Account = (props) => {
 
-  // const [isAccountFavorited, setIsAccountFavorited] = useState(false);
-
-  // const { error: errorAccountFavorite, success: successAccountFavorite } = accountFavorite;
-  // const { error: errorAccountUnfavorite, success: successAccountUnfavorite } = accountUnfavorite;
-
-  // const favoriteAccountHandler = () => {
-  //   favoriteAccount(account.id);
-  // };
-  // const unfavoriteAccountHandler = () => {
-  //   unfavoriteAccount(account.id);
-  // };
-
-  useEffect(() => {
-    // const index = post.likes.findIndex(
-    //   (l) => String(l.user.id) === String(user.profile.id)
-    // );
-
-    // TODO: DELETE
-    // if (index === -1) setIsPostLiked(false);
-    // else setIsPostLiked(true);
-    // setNbrLikes(post.likes.length);
-
-
-    // if (error) {
-    //   showAlert({
-    //     type: "danger",
-    //     title: "error",
-    //     content: error,
-    //   });
-    // }
-
-    // if (errorPostLike) {
-    //   // showAlert({
-    //   //   type: "danger",
-    //   //   title: "error",
-    //   //   content: errorPostLike,
-    //   // });
-    //   resetLikePost();
-    // }
-
-    // if (errorPostUnlike) {
-    //   // showAlert({
-    //   //   type: "danger",
-    //   //   title: "error",
-    //   //   content: errorPostUnlike,
-    //   // });
-    //   resetUnlikePost();
-    // }
-    // if (successAccountFavorite) {
-    //   setIsAccountFavorited(true);
-    //   resetFavoriteAccount();
-    // }
-    // if (successAccountUnfavorite) {
-    //   setIsAccountFavorited(false);
-    //   resetUnfavoriteAccount();
-    // }
-  }, [
-    // resetUnfavoriteAccount,
-    // resetFavoriteAccount,
-    // errorAccountFavorite,
-    // errorAccountUnfavorite,
-    // successAccountFavorite,
-    // successAccountUnfavorite,
-    // post.likes,
-    // showAlert,
-    // userInfo,
-    // error
-  ]);
+  const { account } = props;
 
   return (
     <AccountRow key={account.id} className="padding--y--m">
@@ -104,7 +26,40 @@ const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAcc
               </span>
             </span>
             <div className="options" style={{width: 'auto', position: 'relative'}}>
+              <Popover
+                alignment="end"
+                content={
+                  !account.favorited ? (
+                    <>
+                    <div onClick={() => { props.editFavorited(account, true); }}>
+                      Favorite
+                    </div>
+                    <div
+                      onClick={() => { props.editAccountModal(account); }}>
+                        Edit
+                    </div>
+                  </>
+                  ) : (
+                    <>
+                      <div onClick={() => { props.editFavorited(account, false); }}>
+                        Unfavorite
+                      </div>
+                      <div
+                        onClick={() => { props.editAccountModal(account); }}>
+                          Edit
+                      </div>
+                    </>
+                  )
 
+                }
+                onUserDismiss={function noRefCheck() {}}
+                side="bottom"
+                wrapperDisplay="inline-flex"
+              >
+                <div className="options-traffic-light  ">
+                  <span className="clickable narmi-icon-more-vertical"></span>
+                </div>
+              </Popover>
             </div>
           </BalanceOptions>
         </Row.Item>
@@ -114,22 +69,8 @@ const Account = ({ account, favoriteAccount, unfavoriteAccount, resetFavoriteAcc
   );
 };
 
-const mapStateToProps = (state) => {
-  const { accountFavorite, accountUnfavorite } = state;
-  return { accountFavorite, accountUnfavorite };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    favoriteAccount: (id) => dispatch(favoriteAccount(id)),
-    unfavoriteAccount: (id) => dispatch(unfavoriteAccount(id)),
-    resetFavoriteAccount: () => dispatch(resetFavoriteAccount()),
-    resetUnfavoriteAccount: () => dispatch(resetUnfavoriteAccount()),
-  };
-};
-
 // Export
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default Account;
 
 // Styles
 const AccountRow = styled.div`
@@ -137,7 +78,6 @@ const AccountRow = styled.div`
 
   &:hover {
     background: RGBA(var(--theme-rgb-primary), var(--hover-opacity));
-    cursor: pointer;
   }
 `;
 

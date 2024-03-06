@@ -27,7 +27,7 @@ const AccountModal = props => {
       const form = event.target.form;
       const index = Array.prototype.indexOf.call(form, event.target);
       form.elements[index + 1].focus();
-      if (event.target.name === "targetAmount") {
+      if (event.target.name === "name") {
         document.activeElement.blur();
       }
       event.preventDefault();
@@ -79,7 +79,7 @@ const AccountModal = props => {
           <input
             tabIndex="1"
             onKeyDown={handleEnter}
-            onChange={(e) => setValue(e)}
+            onChange={(e) => props.setValue(e)}
             name="name"
             value={state.account.name}
             type="text"
