@@ -11,7 +11,7 @@ import {
 } from '../actions/threads';
 
 // Components
-import { ContentCard, Row } from '@narmi/design_system';
+import { ContentCard, formatDate, Row } from '@narmi/design_system';
 
 // Messages
 const Messages = (props) => {
@@ -59,7 +59,7 @@ const Messages = (props) => {
                       onClick={() => handleThreadClick(thread)}
                     >
                       <div className="fontWeight--bold">{thread.subject}</div>
-                      <div>{thread.updated_at}</div>
+                      <div>{formatDate(new Date(thread.updated_at), 'long')}</div>
                     </ThreadItem>
                   </Row.Item>
                 </Row>
@@ -72,7 +72,7 @@ const Messages = (props) => {
                   {selectedThread.messages.map((message) => (
                     <div key={message.id}>
                       <div>{message.body}</div>
-                      <div>{message.created_at}</div>
+                      <div>{formatDate(new Date(message.created_at), 'long')}</div>
                     </div>
                   ))}
                   <form onSubmit={handleSubmit}>
