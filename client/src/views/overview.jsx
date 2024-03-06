@@ -1,5 +1,6 @@
 // Dependencies
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ContentCard, Dialog, LoadingShim, Row } from '@narmi/design_system';
 import styled from 'styled-components';
@@ -20,7 +21,7 @@ import {
 import AccountsList from '../components/accounts/list';
 import AccountModal from '../components/accounts/modal';
 import errors from '../components/errors';
-import ThreadsList from '../components/threads/list';
+// import ThreadsList from '../components/threads/list';
 
 // Initial State
 const initialState = {
@@ -54,8 +55,6 @@ const Overview = (props) => {
 
   const editAccountModal = (data) => {
     window.scrollTo(0, 0);
-    console.log('EDIT ACCOUNT MODAL');
-    console.log(data);
     setAccount({
       id: data.id,
       name: data.name,
@@ -68,8 +67,6 @@ const Overview = (props) => {
   const editAccount = () => {
     props.setAccountError(null);
     const { name, favorited, hidden } = account;
-
-    console.log('EDIT ACCOUNT OVERVIEW')
     props.setAccountTouched(false);
     props.editAccount({ account });
   };
@@ -81,12 +78,10 @@ const Overview = (props) => {
   };
 
   const setAccountValue = (e) => {
-    console.log('SET ACCOUNT VALUE');
     props.setAccountTouched(true);
     props.setAccountSaved(false);
     if (e != null && e.target != null) {
       const { name, value } = e.target;
-
       setAccount((account) => ({
         ...account,
         [name]: value,
@@ -94,7 +89,7 @@ const Overview = (props) => {
     }
   };
 
-  if (props.accounts.data !== null && props.threads.data !== null) {
+  if (props.accounts.data !== null) {
     return (
       <NarmiContainer>
         <h1>Novotta</h1>
@@ -134,7 +129,8 @@ const Overview = (props) => {
                   <h3 className="fontFamily--body fontSize--l">Messages</h3>
                 </Row.Item>
               </Row>
-              <ThreadsList state={props.threads} />
+              {/* <ThreadsList state={props.threads} /> */}
+              <Link to="/messages">View All</Link>
             </ContentCard>
           </RightLayout>
         </PageLayout>

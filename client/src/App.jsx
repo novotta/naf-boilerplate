@@ -8,6 +8,7 @@ import "@narmi/design_system/dist/style.css";
 
 // Views
 import Overview from './views/overview';
+import Messages from './views/messages';
 
 // App
 function App() {
@@ -15,7 +16,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Overview />} />
-        {/* Other routes */}
+        <Route path="/messages" element={<Messages />} />
       </Routes>
     </Router>
   );

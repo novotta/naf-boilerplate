@@ -12,6 +12,10 @@ Rails.application.routes.draw do
       end
     end
     resources :threads, only: [:index] do
+      member do
+        get '/messages', to: 'threads#messages'
+        post '/messages', to: 'threads#create_message'
+      end
     end
   end
 

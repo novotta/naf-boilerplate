@@ -28,6 +28,8 @@ export const getThreads = () => {
 				},
 				crossdomain: true,
 			});
+      console.log("ACTION SET THREADS");
+      console.log(response);
       dispatch({ type: SET_THREADS, data: response.data });
       dispatch(setThreadLoading(false));
     } catch (error) {
@@ -37,6 +39,13 @@ export const getThreads = () => {
     }
   };
 };
+
+// Select Thread
+export const SELECT_THREAD = 'SELECT_THREAD';
+const selectThread = (thread) => ({
+  type: SELECT_THREAD,
+  payload: thread,
+});
 
 // Get Code
 export function getCode() {

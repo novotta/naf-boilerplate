@@ -1,20 +1,16 @@
 import update from "immutability-helper";
 import {
   SET_THREADS,
-  SET_THREAD_LOADING
+  SET_THREAD_LOADING,
+  SELECT_THREAD
 } from "../actions/threads";
 
 const initialState = {
-  form: false,
   error: null,
   data: null,
-  savings: null,
   saved: false,
-  timeUntilCompletion: [],
   touched: false,
-  rules: [],
-  nextSavingDate: "N/a",
-  nextSavingAmount: "N/a"
+  selectedThread: null
 };
 
 export default function(state = initialState, action) {
@@ -27,6 +23,11 @@ export default function(state = initialState, action) {
       return update(state, {
         data: { $set: action.data }
       });
+    case SELECT_THREAD:
+      return {
+        ...state,
+        selectedThread: action.payload,
+      };
 
     default:
       return state;

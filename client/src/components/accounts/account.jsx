@@ -64,7 +64,6 @@ const Account = (props) => {
           </BalanceOptions>
         </Row.Item>
       </Row>
-      {/* {name, nickname, id, number, type, product, updated_at, users, features, routing, loan_details, source, state, favorited, hidden, out_of_date, updated_from_source_at, check_micr, metadata, balances, fi_name, created_at, verified, fi_svg} */}
     </AccountRow>
   );
 };

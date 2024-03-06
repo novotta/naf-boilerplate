@@ -6,19 +6,12 @@ import {
   SET_ACCOUNT_SAVED,
   SET_ACCOUNT_TOUCHED
 } from "../actions/accounts";
-// import { SET_LOADING_STATUS } from "../actions/user";
 
 const initialState = {
-  form: false,
   error: null,
   data: null,
-  savings: null,
   saved: false,
-  timeUntilCompletion: [],
-  touched: false,
-  rules: [],
-  nextSavingDate: "N/a",
-  nextSavingAmount: "N/a"
+  touched: false
 };
 
 export default function(state = initialState, action) {

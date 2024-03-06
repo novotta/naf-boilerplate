@@ -49,14 +49,20 @@ class Narmi
     list["threads"]
   end
 
-  def create_thread(data)
-    post("/threads", data)
+  def threads_with_messages
+    list = get("/threads")
+    puts "THREADS WITH MESSAGES"
+    puts list["threads"]
+    list["threads"].each do |thread|
+      # Add messages to each thread
+      thread["messages"] = messages(thread["id"])
+    end
+    puts list["threads"]
+    list["threads"]
   end
 
   def messages(thread_id)
     list = get("/threads/#{thread_id}/messages")
-    puts "MESSAGES"
-    puts list
     list["messages"]
   end
 
