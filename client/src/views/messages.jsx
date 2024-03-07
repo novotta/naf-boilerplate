@@ -98,7 +98,10 @@ const Messages = (props) => {
                   <ThreadSubject>{selectedThread.subject}</ThreadSubject>
                   <MessageWrapper>
                     {selectedThread.messages.map((message) => (
-                      <MessageItem key={message.id}>
+                      <MessageItem
+                        key={message.id}
+                        className={(message.is_staf ? '' : 'mine')}
+                      >
                         <div>{message.body}</div>
                         <span>{formatDate(new Date(message.created_at), 'long')}</span>
                       </MessageItem>
@@ -210,6 +213,9 @@ const ThreadSubject = styled.h3`
 `;
 
 const MessageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   height: 400px;
   overflow-y: scroll;
 `;
@@ -217,8 +223,8 @@ const MessageWrapper = styled.div`
 const MessageItem = styled.div`
   background-color: #F1F3F6;
   border-radius: 8px;
-  margin-bottom: 16px;
   padding: 12px;
+  width: 64%;
 
   span {
     font-size: 12px;

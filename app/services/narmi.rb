@@ -77,7 +77,7 @@ class Narmi
   # response = Narmi.new(code).messages(thread_id)
   def messages(thread_id)
     list = get("/threads/#{thread_id}/messages")
-    list["messages"]
+    list["messages"].sort_by { |message| message["created_at"] }
   end
 
   # ----------------------------------------------
