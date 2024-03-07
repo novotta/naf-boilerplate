@@ -50,7 +50,7 @@ const AccountModal = props => {
           kind="primary"
           label={isLoading ? "Loading..." : "Save"}
           onClick={editAccount}
-          size="s"
+          size="m"
           type="button"
           disabled={isLoading}
         />

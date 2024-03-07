@@ -65,7 +65,6 @@ const Overview = (props) => {
 
   const editAccount = () => {
     props.setAccountError(null);
-    // const { name, favorited, hidden } = account;
     props.setAccountTouched(false);
     props.editAccount({ account });
     setIsDialogOpen(false);

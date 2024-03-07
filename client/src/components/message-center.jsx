@@ -1,11 +1,11 @@
 // Dependencies
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, ContentCard, Tag } from '@narmi/design_system';
+import { Button, ContentCard } from '@narmi/design_system';
 
 // Message Center
 const MessageCenter = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <ContentCard kind="elevated">

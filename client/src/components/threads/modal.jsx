@@ -1,22 +1,11 @@
 // Dependencies
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Button, TextInput } from "@narmi/design_system";
+import styled from 'styled-components';
 
-
+// Thread Modal
 const ThreadModal = props => {
   const [isLoading, setIsLoading] = useState(false);
-  // const [transfer, setTransfer] = useState(false);
-
-  useEffect(() => {
-    if (isLoading) {
-      setIsLoading(false);
-    }
-  }, [props.show]);
-
-  // useEffect(() => {
-  //   if (isLoading && props.account.error) {
-  //     setIsLoading(false);
-  //   }
-  // }, [props.account.error]);
 
   const handleEnter = event => {
     console.log("FIRE")
@@ -33,80 +22,62 @@ const ThreadModal = props => {
 
   const createThread = data => { // editAccount
     setIsLoading(true);
-    console.log("MODAL CREATE THREAD")
-    console.log(data);
     props.createThread(data);
+    setIsLoading(false);
   };
 
   const {
-    // show,
-    setValue,
-    state,
-    // thread,
-    // closeThreadModal
+    state
   } = props;
 
-
-  // let modalContent = (
-  //   <EditAccount
-  //     closeAccountModal={closeAccountModal}
-  //     modalTitle={modalTitle}
-  //     handleEnter={handleEnter}
-  //     setValue={setValue}
-  //     state={state.account}
-  //     account={account}
-  //     button={button}
-  //     show={show}
-  //   />
-  // );
-
   return (
-    <div
-      id="threadModal"
-      className="modal fade in modal-background"
-      // , {
-      //   modalShow: show
-      // })}
-    >
-      <div className="formCover" />
-      {/* {modalContent} */}
+    <div>
       <form>
-        <fieldset>
-          <label className="control-label">Subject</label>
-          <input
+        <FormGroup>
+          <TextInput
+            label="Subject"
             tabIndex="1"
             onKeyDown={handleEnter}
-            onChange={(e) => setValue(e)}
+            onChange={(e) => props.setValue(e)}
             name="subject"
             value={state.thread.subject}
             type="text"
             id="ThreadSubject"
           />
-        </fieldset>
-        <fieldset>
-          <label className="control-label">Message</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <TextInput
+            multiline
+            label="Body"
             tabIndex="2"
             onKeyDown={handleEnter}
-            onChange={(e) => setValue(e)}
+            onChange={(e) => props.setValue(e)}
             name="body"
             value={state.thread.body}
             type="text"
             id="ThreadMessage"
           />
-        </fieldset>
-        <button
+        </FormGroup>
+        <Button
+          as="button"
+          kind="primary"
+          label={isLoading ? "Loading..." : "Save"}
           onClick={createThread}
+          size="m"
           type="button"
-          className="btn btn-sm btn-primary"
-          id="threadButton"
           disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Save"}
-        </button>
+        />
       </form>
     </div>
   );
 };
 
+// Export
 export default ThreadModal;
+
+// Styles
+const FormGroup = styled.fieldset`
+  border: 0;
+  margin: 0 0 16px;
+  padding: 0;
+`;

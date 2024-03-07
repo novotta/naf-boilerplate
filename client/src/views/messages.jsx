@@ -1,6 +1,5 @@
 // Dependencies
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
@@ -15,8 +14,9 @@ import {
 } from '../actions/threads';
 
 // Components
-import { ContentCard, Dialog, formatDate, Row } from '@narmi/design_system';
+import { ContentCard, Dialog, formatDate } from '@narmi/design_system';
 import ThreadModal from '../components/threads/modal';
+import MessageTitle from '../components/threads/message-title';
 
 // Initial State
 const initialState = {
@@ -54,34 +54,21 @@ const Messages = (props) => {
     }
   };
 
-  // const createThreadModal = (data) => {
-  //   window.scrollTo(0, 0);
-  //   setThread({
-  //     id: data.id,
-  //     subject: data.subject,
-  //     body: data.body
-  //   });
-  //   setIsDialogOpen(true);
-  // };
-
   const createThread = () => {
     props.setThreadError(null);
-    const { subject, body } = thread;
     props.setThreadTouched(false);
     props.createThread({ thread });
+    setIsDialogOpen(false);
   };
 
   const setThreadValue = (e) => {
-    console.log("SET THREAD VALUE");
-    console.log(e.target);
     props.setThreadTouched(true);
     props.setThreadSaved(false);
     if (e != null && e.target != null) {
-      const { subject, value } = e.target;
-      console.log(thread);
+      const { name, value } = e.target;
       setThread((thread) => ({
         ...thread,
-        [subject]: value,
+        [name]: value,
       }));
     }
   };
@@ -89,31 +76,19 @@ const Messages = (props) => {
   if (props.threads.data !== null) {
     return (
       <NarmiContainer>
-        <Row alignItems="center" justifyContent="start" gapSize="l">
-          <Row.Item>
-            <MessageTitle className="fontWeight--bold">Message Center</MessageTitle>
-            <Link to="/">Back to Overview</Link>
-          </Row.Item>
-          <Row.Item>
-            <button onClick={() => setIsDialogOpen(true)} >Add Message</button>
-          </Row.Item>
-        </Row>
+        <MessageTitle setIsDialogOpen={setIsDialogOpen} />
         <ContentCard kind="elevated" paddingSize="none">
           <PageLayout>
             <LeftLayout>
               {props.threads.data.map((thread) => (
-                <Row key={thread.id} alignItems="center" justifyContent="start" gapSize="l">
-                  <Row.Item>
-                    {/* if selectedThread.id === thread.id, add class "selected" */}
-                    <ThreadItem
-                      className={(selectedThread && selectedThread.id === thread.id ? 'selected' : '')}
-                      onClick={() => handleThreadClick(thread)}
-                    >
-                      <div className="fontWeight--bold">{thread.subject}</div>
-                      <div>{formatDate(new Date(thread.updated_at), 'long')}</div>
-                    </ThreadItem>
-                  </Row.Item>
-                </Row>
+                <ThreadItem
+                  key={thread.id}
+                  className={(selectedThread && selectedThread.id === thread.id ? 'selected' : '')}
+                  onClick={() => handleThreadClick(thread)}
+                >
+                  <div className="fontWeight--bold">{thread.subject}</div>
+                  <div>{formatDate(new Date(thread.updated_at), 'long')}</div>
+                </ThreadItem>
               ))}
             </LeftLayout>
             <RightLayout>
@@ -181,12 +156,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Messages);
 // Styles
 const NarmiContainer = styled.div`
   width: 1300px;
-`;
-
-const MessageTitle = styled.h1`
-  color: RGBA(var(--primary-accessible-color));
-  line-height: 1.2;
-  margin: 24px 0;
 `;
 
 const PageLayout = styled.div`
