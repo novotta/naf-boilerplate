@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 // Components
 import { formatNumber, Popover, Row } from '@narmi/design_system';
+import Menu from './menu';
 
 // Account
 const Account = (props) => {
@@ -28,37 +29,15 @@ const Account = (props) => {
             <div className="options" style={{width: 'auto', position: 'relative'}}>
               <Popover
                 alignment="end"
-                content={
-                  !account.favorited ? (
-                    <>
-                    <div onClick={() => { props.editFavorited(account, true); }}>
-                      Favorite
-                    </div>
-                    <div
-                      onClick={() => { props.editAccountModal(account); }}>
-                        Edit
-                    </div>
-                  </>
-                  ) : (
-                    <>
-                      <div onClick={() => { props.editFavorited(account, false); }}>
-                        Unfavorite
-                      </div>
-                      <div
-                        onClick={() => { props.editAccountModal(account); }}>
-                          Edit
-                      </div>
-                    </>
-                  )
-
-                }
+                closeOnContentClick
+                content={<Menu account={account} editAccountModal={props.editAccountModal} editFavorited={props.editFavorited} />}
                 onUserDismiss={function noRefCheck() {}}
                 side="bottom"
                 wrapperDisplay="inline-flex"
               >
-                <div className="options-traffic-light  ">
+                <Options>
                   <span className="clickable narmi-icon-more-vertical"></span>
-                </div>
+                </Options>
               </Popover>
             </div>
           </BalanceOptions>
@@ -90,4 +69,9 @@ const BalanceOptions = styled.div`
     display: flex;
     justify-content: center;
   }
+`;
+
+const Options = styled.div`
+  cursor: pointer;
+  padding: 0 4px;
 `;

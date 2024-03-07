@@ -1,26 +1,11 @@
-import React, { useState, useEffect } from "react";
-// import classnames from "classnames";
-// import GoalSettings from "./goalSettings";
-// import EditGoal from "./editGoal";
-// import Alert from "./alert";
-// import DeleteAlert from "./deleteAlert";
-// import GoalTransfer from "./goalTransfer";
+// Dependencies
+import React, { useState } from "react";
+import { Button, TextInput } from "@narmi/design_system";
+import styled from 'styled-components';
 
+// AccountModal
 const AccountModal = props => {
   const [isLoading, setIsLoading] = useState(false);
-  // const [transfer, setTransfer] = useState(false);
-
-  useEffect(() => {
-    if (isLoading) {
-      setIsLoading(false);
-    }
-  }, [props.show]);
-
-  // useEffect(() => {
-  //   if (isLoading && props.account.error) {
-  //     setIsLoading(false);
-  //   }
-  // }, [props.account.error]);
 
   const handleEnter = event => {
     if (event.keyCode === 13) {
@@ -41,41 +26,16 @@ const AccountModal = props => {
   };
 
   const {
-    // show,
-    // setValue,
-    state,
-    // account,
-    // closeAccountModal
+    state
   } = props;
 
-
-  // let modalContent = (
-  //   <EditAccount
-  //     closeAccountModal={closeAccountModal}
-  //     modalTitle={modalTitle}
-  //     handleEnter={handleEnter}
-  //     setValue={setValue}
-  //     state={state.account}
-  //     account={account}
-  //     button={button}
-  //     show={show}
-  //   />
-  // );
-
   return (
-    <div
-      id="accountModal"
-      className="modal fade in modal-background"
-      // , {
-      //   modalShow: show
-      // })}
-    >
-      <div className="formCover" />
-      {/* {modalContent} */}
+    <div>
       <form>
-        <fieldset>
-          <label className="control-label">Name</label>
-          <input
+        <FormGroup>
+          <TextInput
+            label="Name"
+            onBlur={function noRefCheck(){}}
             tabIndex="1"
             onKeyDown={handleEnter}
             onChange={(e) => props.setValue(e)}
@@ -84,19 +44,27 @@ const AccountModal = props => {
             type="text"
             id="AccountName"
           />
-        </fieldset>
-        <button
+        </FormGroup>
+        <Button
+          as="button"
+          kind="primary"
+          label={isLoading ? "Loading..." : "Save"}
           onClick={editAccount}
+          size="s"
           type="button"
-          className="btn btn-sm btn-primary"
-          id="accountButton"
           disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Save"}
-        </button>
+        />
       </form>
     </div>
   );
 };
 
+// Export
 export default AccountModal;
+
+// Styles
+const FormGroup = styled.fieldset`
+  border: 0;
+  margin: 0 0 16px;
+  padding: 0;
+`;
