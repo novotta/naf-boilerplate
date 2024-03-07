@@ -1,12 +1,23 @@
-# Create an AccountsController with an index to retrive accounts from the Narmi service.
-
+# ================================================
+# CONTROLLERS->ACCOUNTS ==========================
+# ================================================
 class Api::AccountsController < ApplicationController
 
+  # ==============================================
+  # ACTIONS ======================================
+  # ==============================================
+
+  # ----------------------------------------------
+  # INDEX ----------------------------------------
+  # ----------------------------------------------
   def index
     accounts = Narmi.new(request.headers["Authorization"]).accounts
     render json: accounts
   end
 
+  # ----------------------------------------------
+  # UPDATE ---------------------------------------
+  # ----------------------------------------------
   def update
     payload = {
       name: params[:account][:name],
@@ -17,6 +28,9 @@ class Api::AccountsController < ApplicationController
     render json: account
   end
 
+  # ----------------------------------------------
+  # FAVORITE -------------------------------------
+  # ----------------------------------------------
   def favorite
     payload = {
       favorited: true
@@ -25,6 +39,9 @@ class Api::AccountsController < ApplicationController
     render json: account
   end
 
+  # ----------------------------------------------
+  # UNFAVORITE -----------------------------------
+  # ----------------------------------------------
   def unfavorite
     payload = {
       favorited: false
@@ -32,7 +49,5 @@ class Api::AccountsController < ApplicationController
     account = Narmi.new(request.headers["Authorization"]).update_account(params[:account_id], payload)
     render json: account
   end
-
-  private
 
 end

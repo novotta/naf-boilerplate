@@ -54,7 +54,7 @@ export function createThread(data) {
     try {
       const response = await axios({
 				method: 'POST',
-				url: 'http://localhost:3001/api/threads/',
+				url: 'https://narmi.novotta.com/api/threads/',
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const getThreads = () => {
       dispatch(setThreadLoading(true));
       const response = await axios({
 				method: 'GET',
-				url: 'http://localhost:3001/api/threads',
+				url: 'https://narmi.novotta.com/api/threads',
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -108,7 +108,7 @@ export const addMessage = (thread, message) => {
       dispatch(setThreadLoading(true));
       const response = await axios({
 				method: 'POST',
-				url: 'http://localhost:3001/api/threads/' + thread.id + '/messages',
+				url: 'https://narmi.novotta.com/api/threads/' + thread.id + '/messages',
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",

@@ -19,11 +19,12 @@ const ThreadModal = props => {
   // }, [props.account.error]);
 
   const handleEnter = event => {
+    console.log("FIRE")
     if (event.keyCode === 13) {
       const form = event.target.form;
       const index = Array.prototype.indexOf.call(form, event.target);
       form.elements[index + 1].focus();
-      if (event.target.name === "name") {
+      if (event.target.name === "subject") {
         document.activeElement.blur();
       }
       event.preventDefault();
@@ -75,8 +76,8 @@ const ThreadModal = props => {
           <input
             tabIndex="1"
             onKeyDown={handleEnter}
-            onChange={(e) => props.setValue(e)}
-            name="name"
+            onChange={(e) => setValue(e)}
+            name="subject"
             value={state.thread.subject}
             type="text"
             id="ThreadSubject"
@@ -85,10 +86,10 @@ const ThreadModal = props => {
         <fieldset>
           <label className="control-label">Message</label>
           <input
-            tabIndex="1"
+            tabIndex="2"
             onKeyDown={handleEnter}
-            onChange={(e) => props.setValue(e)}
-            name="name"
+            onChange={(e) => setValue(e)}
+            name="body"
             value={state.thread.body}
             type="text"
             id="ThreadMessage"

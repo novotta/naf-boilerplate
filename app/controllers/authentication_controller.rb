@@ -2,9 +2,18 @@ require 'base64'
 require 'http'
 require 'openssl'
 
+# ================================================
+# CONTROLLERS->AUTHENTICATION ====================
+# ================================================
 class AuthenticationController < ApplicationController
 
-  # Action method to handle the POST request
+  # ==============================================
+  # ACTIONS ======================================
+  # ==============================================
+
+  # ----------------------------------------------
+  # VERIFY ---------------------------------------
+  # ----------------------------------------------
   def verify
     # Extract the signed_request parameter from the POST request
     signed_request = authentication_params[:signed_request]
@@ -26,9 +35,14 @@ class AuthenticationController < ApplicationController
     redirect_to "/?code=#{authentication_params[:code]}"
   end
 
+  # ==============================================
+  # PRIVATE ======================================
+  # ==============================================
   private
 
-  # permit the secure code to be passed in the request
+  # ----------------------------------------------
+  # AUTHENTICATION-PARAMS ------------------------
+  # ----------------------------------------------
   def authentication_params
     params.permit(:code, :signed_request)
   end

@@ -21,9 +21,8 @@ import ThreadModal from '../components/threads/modal';
 // Initial State
 const initialState = {
   thread: {
-    id: null,
     subject: '',
-    body: '',
+    body: ''
   }
 };
 
@@ -73,10 +72,13 @@ const Messages = (props) => {
   };
 
   const setThreadValue = (e) => {
+    console.log("SET THREAD VALUE");
+    console.log(e.target);
     props.setThreadTouched(true);
     props.setThreadSaved(false);
     if (e != null && e.target != null) {
       const { subject, value } = e.target;
+      console.log(thread);
       setThread((thread) => ({
         ...thread,
         [subject]: value,
@@ -152,10 +154,12 @@ const Messages = (props) => {
 // Map State to Props
 const mapStateToProps = (state) => {
   const {
+    thread,
     threads,
     addMessage
   } = state;
   return {
+    thread,
     threads,
     addMessage
   };
@@ -164,6 +168,10 @@ const mapStateToProps = (state) => {
 // Map Dispatch to Props
 const mapDispatchToProps = {
   getThreads,
+  createThread,
+  setThreadError,
+  setThreadSaved,
+  setThreadTouched,
   addMessage
 };
 

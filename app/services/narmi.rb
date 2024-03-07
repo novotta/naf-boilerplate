@@ -13,6 +13,7 @@ class Narmi
   def initialize(code)
     logger = Logger.new($stdout)
     @http = HTTP.use(logging: {logger: logger})
+    @timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
     @exchange = exchange_token(code)
   end
 
@@ -29,6 +30,9 @@ class Narmi
     list["accounts"]
   end
 
+  # ----------------------------------------------
+  # UPDATE-ACCOUNT -------------------------------
+  # ----------------------------------------------
   # response = Narmi.new(code).update_account(account_id, data)
   def update_account(account_id, data)
     put("/accounts/#{account_id}", data)
@@ -47,6 +51,10 @@ class Narmi
     list["threads"]
   end
 
+  # ----------------------------------------------
+  # THREADS-WITH-MESSAGES ------------------------
+  # ----------------------------------------------
+  # response = Narmi.new(code).threads_with_messages
   def threads_with_messages
     list = get("/threads")
     list["threads"].each do |thread|
@@ -55,20 +63,30 @@ class Narmi
     list["threads"]
   end
 
+  # ----------------------------------------------
+  # CREATE-THREAD --------------------------------
+  # ----------------------------------------------
+  # response = Narmi.new(code).create_thread(data)
   def create_thread(data)
     post("/threads", data)
   end
 
+  # ----------------------------------------------
+  # MESSAGES -------------------------------------
+  # ----------------------------------------------
+  # response = Narmi.new(code).messages(thread_id)
   def messages(thread_id)
     list = get("/threads/#{thread_id}/messages")
     list["messages"]
   end
 
+  # ----------------------------------------------
+  # CREATE-MESSAGE -------------------------------
+  # ----------------------------------------------
+  # response = Narmi.new(code).create_message(thread_id, data)
   def create_message(thread_id, data)
     post("/threads/#{thread_id}/messages", data)
   end
-
-
 
   # ==============================================
   # PRIVATE ======================================
@@ -89,29 +107,26 @@ class Narmi
     HTTP.headers("Content-Type" => "application/json").post("https://api.sandbox.narmi.dev/v1/tokens", json: payload).parse
   end
 
+  def signature
+    signature = OpenSSL::HMAC.digest('sha256', @exchange["secret"] , "date: #{@timestamp}")
+    signature_base64 = Base64.strict_encode64(signature)
+    return "keyId=\"#{@exchange["token"]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
+  end
+
+  def request_headers
+    {
+      'Authorization' => "Bearer #{@exchange["token"]}",
+      'date' => @timestamp,
+      'Content-Type' => 'application/json',
+      'Signature' => signature
+    }
+  end
+
   # ----------------------------------------------
   # GET ------------------------------------------
   # ----------------------------------------------
   def get(endpoint)
-    date = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    # Calculate HMAC using OpenSSL
-    signature = OpenSSL::HMAC.digest('sha256', @exchange["secret"] , "date: #{date}")
-    signature_base64 = Base64.strict_encode64(signature)
-
-    # Construct the Signature header
-    sig_header = "keyId=\"#{@exchange["token"]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
-
-    # Construct request headers
-    request_headers = {
-      'Authorization' => "Bearer #{@exchange["token"]}",
-      'date' => date,
-      'Content-Type' => 'text/javascript',
-      'Signature' => sig_header
-    }
-
     response = @http.get(BASE_URL + endpoint, headers: request_headers)
-
     begin
       data = JSON.parse(response.body)
     rescue JSON::ParserError => e
@@ -126,27 +141,7 @@ class Narmi
   # POST -----------------------------------------
   # ----------------------------------------------
   def post(endpoint, data)
-    date = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    # Calculate HMAC using OpenSSL
-    signature = OpenSSL::HMAC.digest('sha256', @exchange["secret"] , "date: #{date}")
-    signature_base64 = Base64.strict_encode64(signature)
-
-    # Construct the Signature header
-    sig_header = "keyId=\"#{@exchange["token"]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
-
-    # Construct request headers
-    request_headers = {
-      'Authorization' => "Bearer #{@exchange["token"]}",
-      'date' => date,
-      'Content-Type' => 'application/json',
-      'Signature' => sig_header
-    }
-
     response = @http.post(BASE_URL + endpoint, headers: request_headers, body: data.to_json)
-    puts "POST"
-    puts response.body
-
     begin
       data = JSON.parse(response.body)
     rescue JSON::ParserError => e
@@ -161,27 +156,7 @@ class Narmi
   # PUT ------------------------------------------
   # ----------------------------------------------
   def put(endpoint, data)
-    date = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    # Calculate HMAC using OpenSSL
-    signature = OpenSSL::HMAC.digest('sha256', @exchange["secret"] , "date: #{date}")
-    signature_base64 = Base64.strict_encode64(signature)
-
-    # Construct the Signature header
-    sig_header = "keyId=\"#{@exchange["token"]}\",algorithm=\"hmac-sha256\",signature=\"#{signature_base64}\",headers=\"date\""
-
-    # Construct request headers
-    request_headers = {
-      'Authorization' => "Bearer #{@exchange["token"]}",
-      'date' => date,
-      'Content-Type' => 'application/json',
-      'Signature' => sig_header
-    }
-
     response = @http.put(BASE_URL + endpoint, headers: request_headers, body: data.to_json)
-    puts "PUT"
-    puts response.body
-
     begin
       data = JSON.parse(response.body)
     rescue JSON::ParserError => e

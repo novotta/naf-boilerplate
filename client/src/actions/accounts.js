@@ -53,7 +53,7 @@ export const getAccounts = () => {
       dispatch(setAccountLoading(true));
       const response = await axios({
 				method: 'GET',
-				url: 'http://localhost:3001/api/accounts',
+				url: 'https://narmi.novotta.com/api/accounts',
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -80,7 +80,7 @@ export function editAccount(data) {
     try {
       const response = await axios({
 				method: 'PATCH',
-				url: 'http://localhost:3001/api/accounts/' + data.account.id,
+				url: 'https://narmi.novotta.com/api/accounts/' + data.account.id,
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",

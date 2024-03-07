@@ -1,10 +1,23 @@
+# ================================================
+# CONTROLLERS->THREADS ===========================
+# ================================================
 class Api::ThreadsController < ApplicationController
 
+  # ==============================================
+  # ACTIONS ======================================
+  # ==============================================
+
+  # ----------------------------------------------
+  # INDEX ----------------------------------------
+  # ----------------------------------------------
   def index
     threads = Narmi.new(request.headers["Authorization"]).threads_with_messages
     render json: threads
   end
 
+  # ----------------------------------------------
+  # CREATE ---------------------------------------
+  # ----------------------------------------------
   def create
     payload = {
       subject: params[:subject],
@@ -14,9 +27,10 @@ class Api::ThreadsController < ApplicationController
     render json: new_thread
   end
 
+  # ----------------------------------------------
+  # CREATE-MESSAGE -------------------------------
+  # ----------------------------------------------
   def create_message
-    puts "CREATE MESSAGE"
-    puts params
     payload = {
       body: params[:message],
       internal_note: false
@@ -24,7 +38,5 @@ class Api::ThreadsController < ApplicationController
     new_message = Narmi.new(request.headers["Authorization"]).create_message(params[:id], payload)
     render json: new_message
   end
-
-  private
 
 end
