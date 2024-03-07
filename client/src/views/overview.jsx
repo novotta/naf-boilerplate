@@ -20,6 +20,7 @@ import {
 // Components
 import AccountsList from '../components/accounts/list';
 import AccountModal from '../components/accounts/modal';
+import Novotta from '../components/novotta';
 
 // Initial State
 const initialState = {
@@ -67,6 +68,7 @@ const Overview = (props) => {
     // const { name, favorited, hidden } = account;
     props.setAccountTouched(false);
     props.editAccount({ account });
+    setIsDialogOpen(false);
   };
 
   const editFavorited = (account, favorited) => {
@@ -90,8 +92,6 @@ const Overview = (props) => {
   if (props.accounts.data !== null) {
     return (
       <NarmiContainer>
-        <h1>Novotta</h1>
-        <p>Access Code: {localStorage.getItem('code')}</p>
         <PageLayout>
           <LeftLayout>
             <ContentCard kind="elevated">
@@ -127,9 +127,9 @@ const Overview = (props) => {
                   <h3 className="fontFamily--body fontSize--l">Messages</h3>
                 </Row.Item>
               </Row>
-              {/* <ThreadsList state={props.threads} /> */}
               <Link to="/messages">View All</Link>
             </ContentCard>
+            <Novotta />
           </RightLayout>
         </PageLayout>
         <Dialog isOpen={isDialogOpen} title={`Edit Account`} onUserDismiss={() => { setIsDialogOpen(false); }}>
@@ -186,7 +186,7 @@ const PageLayout = styled.div`
 
   @media screen and (min-width: 1280px) {
     display: grid;
-    gap: 1.33rem;
+    gap: 40px;
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 `;
@@ -202,6 +202,9 @@ const LeftLayout = styled.div`
 `;
 
 const RightLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
   order: 1;
 
   @media screen and (min-width: 1280px) {

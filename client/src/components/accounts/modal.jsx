@@ -37,6 +37,7 @@ const AccountModal = props => {
   const editAccount = data => {
     setIsLoading(true);
     props.editAccount(data);
+    setIsLoading(false);
   };
 
   const {
