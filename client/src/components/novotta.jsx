@@ -8,14 +8,13 @@ const Novotta = () => {
   return (
     <ContentCard kind="elevated">
       <img src="https://uploads-ssl.webflow.com/63af1628cee58c58f81bc648/648c8e187f40f5721105c0e2_logomark-novotta.png" alt="Novotta" height="40" />
-      <p>Novotta is a technology partner for financial institutions and fintech.</p>
+      <p>Novotta is a technology partner for banks, credit unions, and fintech.</p>
       <Button
         as="a"
         kind="secondary"
-        label="View Website"
-        onClick={() => {
-          window.open('https://www.novotta.com/', '_blank');
-        }}
+        label="View website"
+        href="https://www.novotta.com/"
+        target="_blank"
         size="s"
         type="button"
       />

@@ -20,6 +20,7 @@ import {
 // Components
 import AccountsList from '../components/accounts/list';
 import AccountModal from '../components/accounts/modal';
+import MessageCenter from '../components/message-center';
 import Novotta from '../components/novotta';
 
 // Initial State
@@ -121,14 +122,7 @@ const Overview = (props) => {
             </ContentCard>
           </LeftLayout>
           <RightLayout>
-            <ContentCard kind="elevated">
-              <Row alignItems="center">
-                <Row.Item>
-                  <h3 className="fontFamily--body fontSize--l">Messages</h3>
-                </Row.Item>
-              </Row>
-              <Link to="/messages">View All</Link>
-            </ContentCard>
+            <MessageCenter />
             <Novotta />
           </RightLayout>
         </PageLayout>
