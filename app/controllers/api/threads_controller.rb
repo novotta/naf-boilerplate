@@ -21,7 +21,7 @@ class Api::ThreadsController < ApplicationController
   def create
     payload = {
       subject: params[:thread][:subject],
-      body: params[:thread][:message],
+      body: params[:thread][:body],
     }
     new_thread = Narmi.new(request.headers["Authorization"]).create_thread(payload)
     render json: new_thread
