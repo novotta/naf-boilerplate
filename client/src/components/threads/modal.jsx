@@ -8,7 +8,6 @@ const ThreadModal = props => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleEnter = event => {
-    console.log("FIRE")
     if (event.keyCode === 13) {
       const form = event.target.form;
       const index = Array.prototype.indexOf.call(form, event.target);

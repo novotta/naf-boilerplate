@@ -1,6 +1,7 @@
 // Dependencies
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Button, Row, TextInput } from '@narmi/design_system';
 import styled from 'styled-components';
 
 // Actions
@@ -94,17 +95,31 @@ const Messages = (props) => {
             <RightLayout>
               {selectedThread ? (
                 <div>
-                  <h3>{selectedThread.subject}</h3>
-                  {selectedThread.messages.map((message) => (
-                    <div key={message.id}>
-                      <div>{message.body}</div>
-                      <div>{formatDate(new Date(message.created_at), 'long')}</div>
-                    </div>
-                  ))}
-                  <form onSubmit={handleSubmit}>
-            <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-            <button type="submit">Add Message</button>
-          </form>
+                  <ThreadSubject>{selectedThread.subject}</ThreadSubject>
+                  <MessageWrapper>
+                    {selectedThread.messages.map((message) => (
+                      <MessageItem key={message.id}>
+                        <div>{message.body}</div>
+                        <span>{formatDate(new Date(message.created_at), 'long')}</span>
+                      </MessageItem>
+                    ))}
+                  </MessageWrapper>
+                  <MessageForm onSubmit={handleSubmit}>
+                    <TextInput
+                      multiline
+                      label="Message"
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                    <Button
+                      as="button"
+                      kind="primary"
+                      label="Send"
+                      type="submit"
+                      style={{ alignSelf: 'flex-end'}}
+                    />
+                  </MessageForm>
                 </div>
               ) : (
                 <p>No message selected.</p>
@@ -185,4 +200,34 @@ const ThreadItem = styled.div`
   &.selected {
     background-color: #F1F3F6;
   }
+`;
+
+const ThreadSubject = styled.h3`
+  border-bottom: 1px solid #F1F3F6;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+`;
+
+const MessageWrapper = styled.div`
+  height: 400px;
+  overflow-y: scroll;
+`;
+
+const MessageItem = styled.div`
+  background-color: #F1F3F6;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  padding: 12px;
+
+  span {
+    font-size: 12px;
+    line-height: 20px;
+  }
+`;
+
+const MessageForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
