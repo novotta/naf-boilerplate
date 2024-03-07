@@ -20,8 +20,6 @@ import {
 // Components
 import AccountsList from '../components/accounts/list';
 import AccountModal from '../components/accounts/modal';
-import errors from '../components/errors';
-// import ThreadsList from '../components/threads/list';
 
 // Initial State
 const initialState = {
@@ -66,7 +64,7 @@ const Overview = (props) => {
 
   const editAccount = () => {
     props.setAccountError(null);
-    const { name, favorited, hidden } = account;
+    // const { name, favorited, hidden } = account;
     props.setAccountTouched(false);
     props.editAccount({ account });
   };

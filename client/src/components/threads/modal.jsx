@@ -39,11 +39,11 @@ const ThreadModal = props => {
   };
 
   const {
-    show,
+    // show,
     setValue,
     state,
-    thread,
-    closeThreadModal
+    // thread,
+    // closeThreadModal
   } = props;
 
 

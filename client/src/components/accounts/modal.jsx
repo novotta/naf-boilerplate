@@ -36,17 +36,15 @@ const AccountModal = props => {
 
   const editAccount = data => {
     setIsLoading(true);
-    console.log("MODAL EDIT ACCOUNT")
-    console.log(data);
     props.editAccount(data);
   };
 
   const {
-    show,
-    setValue,
+    // show,
+    // setValue,
     state,
-    account,
-    closeAccountModal
+    // account,
+    // closeAccountModal
   } = props;
 
 

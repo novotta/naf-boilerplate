@@ -47,12 +47,9 @@ export function setThreadTouched(data) {
 
 // Create Thread
 export function createThread(data) {
-  console.log("CREATE THREAD ACTION");
-  console.log(data);
-
   return async (dispatch) => {
     try {
-      const response = await axios({
+      await axios({
 				method: 'POST',
 				url: 'https://narmi.novotta.com/api/threads/',
 				headers: {
@@ -65,7 +62,6 @@ export function createThread(data) {
         },
 				crossdomain: true,
 			});
-      console.log("THREAD CREATED");
       dispatch(setThreadSaved(true));
       dispatch(getThreads());
     } catch (error) {
@@ -119,8 +115,6 @@ export const addMessage = (thread, message) => {
         },
 				crossdomain: true,
 			});
-      console.log("ACTION ADD MESSAGE");
-      console.log(response);
       dispatch({ type: ADD_MESSAGE, data: response.data });
       dispatch(setThreadLoading(false));
     } catch (error) {

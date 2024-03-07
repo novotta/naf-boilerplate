@@ -73,12 +73,9 @@ export const getAccounts = () => {
 
 // Edit Account
 export function editAccount(data) {
-  console.log("EDIT ACCOUNT ACTION");
-  console.log(data);
-
   return async (dispatch) => {
     try {
-      const response = await axios({
+      await axios({
 				method: 'PATCH',
 				url: 'https://narmi.novotta.com/api/accounts/' + data.account.id,
 				headers: {
@@ -91,7 +88,6 @@ export function editAccount(data) {
         },
 				crossdomain: true,
 			});
-      console.log("ACCOUNT UPDATED");
       dispatch(setAccountSaved(true));
       dispatch(getAccounts());
     } catch (error) {
