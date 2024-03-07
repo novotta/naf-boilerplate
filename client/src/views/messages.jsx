@@ -100,7 +100,7 @@ const Messages = (props) => {
                     {selectedThread.messages.map((message) => (
                       <MessageItem
                         key={message.id}
-                        className={(message.is_staf ? '' : 'mine')}
+                        className={(message.is_staff ? '' : 'mine')}
                       >
                         <div>{message.body}</div>
                         <span>{formatDate(new Date(message.created_at), 'long')}</span>
@@ -225,6 +225,12 @@ const MessageItem = styled.div`
   border-radius: 8px;
   padding: 12px;
   width: 64%;
+
+  &.mine {
+    align-self: flex-end;
+    background-color: var(--theme-primary);
+    color: #FFF;
+  }
 
   span {
     font-size: 12px;

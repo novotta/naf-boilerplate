@@ -117,6 +117,7 @@ export const addMessage = (thread, message) => {
 			});
       dispatch({ type: ADD_MESSAGE, data: response.data });
       dispatch(setThreadLoading(false));
+      dispatch(getThreads());
     } catch (error) {
       console.log(error);
       dispatch({ type: ADD_MESSAGE, payload: [] });
